@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ThirdPersonCamera : MonoBehaviour
 {
     [SerializeField] private Camera _camera;
+
     private Transform _objectTransform;
     private Vector3 _linkVector;
 
