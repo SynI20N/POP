@@ -36,6 +36,4 @@ public class Cell : MonoBehaviour, IPointerClickHandler
     {
         _cellMaterial.SetColor("_EmissionColor", glowColor);
     }
-
-    
 }
