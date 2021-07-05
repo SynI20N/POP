@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-public class Field : MonoBehaviour
+public class Field : Observer
 {
     [SerializeField] private int _hight;
     [SerializeField] private int _length;
@@ -12,10 +13,18 @@ public class Field : MonoBehaviour
 
     private Cell[,] _field;
 
-    public void Awake()
+    private void Awake()
     {
         _field = new Cell[_length, _hight];
         CreateField();
+    }
+
+    private void Start()
+    {
+        foreach (var cell in )
+        {
+            cell.RegisterObserver(this);
+        }
     }
 
     private void CreateField()
@@ -51,5 +60,13 @@ public class Field : MonoBehaviour
         position.z = z * (CellMetrics.outerRadius * 1.5f);
 
         return position;
+    }
+
+    public override void OnNotify(object value, NotificationType notificationType)
+    {
+        if(notificationType == NotificationType.CellPressed)
+        {
+
+        }
     }
 }
