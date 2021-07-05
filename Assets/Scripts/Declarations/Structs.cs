@@ -7,6 +7,7 @@ public struct Plane
     public Vector3 Right;
     public Vector3 Left;
 }
+
 public struct TouchInfo
 {
     public bool Pressed;
