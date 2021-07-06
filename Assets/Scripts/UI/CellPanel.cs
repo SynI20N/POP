@@ -7,7 +7,7 @@ public class CellPanel : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _textDescription;
 
-    private const float TweenTime = 0.5f;
+    private const float _tweenTime = 0.5f;
 
     private GameObject _panel;
     private CanvasGroup _canvasGroup;
@@ -42,6 +42,7 @@ public class CellPanel : MonoBehaviour
     {
         _canvasGroup.alpha = alpha;
         _panel.transform.localScale = zero;
-        _panel.transform.DOScale(alpha, TweenTime);
+        _panel.transform.DOKill();
+        _panel.transform.DOScale(alpha, _tweenTime);
     }
 }
