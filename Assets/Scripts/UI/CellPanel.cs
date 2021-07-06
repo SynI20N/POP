@@ -4,11 +4,19 @@ using UnityEngine;
 
 public class CellPanel : MonoBehaviour
 {
-    [SerializeField] private GameObject _panel;
+    private GameObject _panel;
 
     private void Start()
     {
-        
+        _panel = gameObject;
+
+        Close();
+        Cell.onPointerClick += Open;
+    }
+
+    private void OnDestroy()
+    {
+        Cell.onPointerClick -= Open;
     }
 
     public void Close()
@@ -16,7 +24,7 @@ public class CellPanel : MonoBehaviour
         _panel.SetActive(false);
     }
 
-    public void Open()
+    public void Open(Cell cell)
     {
         _panel.SetActive(true);
     }

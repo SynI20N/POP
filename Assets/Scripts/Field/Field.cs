@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class Field : Observer
+/*public class Field : MonoBehaviour
 {
     [SerializeField] private int _hight;
     [SerializeField] private int _length;
@@ -70,3 +70,4 @@ public class Field : Observer
         }
     }
 }
+*/
