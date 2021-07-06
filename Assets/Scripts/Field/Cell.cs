@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Cell : MonoBehaviour, IPointerClickHandler
+public class Cell : Subject, IPointerClickHandler
 {
     [SerializeField] private Color _glowColor;
 
     private GameObject _cell;
     private Material _cellMaterial;
 
+    public static event Action<Cell> onPointerClick;
     private void Start()
     {
         _cell = gameObject;
@@ -19,10 +20,16 @@ public class Cell : MonoBehaviour, IPointerClickHandler
     }
     public void OnPointerClick(PointerEventData eventData)
     {
+
         LightCell();
     }
 
     private void LightCell()
+    {
+        SetColor(_glowColor);
+    }
+
+    private void UnlightCell()
     {
         SetColor(_glowColor);
     }
@@ -36,6 +43,4 @@ public class Cell : MonoBehaviour, IPointerClickHandler
     {
         _cellMaterial.SetColor("_EmissionColor", glowColor);
     }
-
-    
 }
