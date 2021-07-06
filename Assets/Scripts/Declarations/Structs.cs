@@ -15,3 +15,9 @@ public struct TouchInfo
     public Vector2 InitPos;
     public Vector2 CurrentPos;
 }
+
+public struct CellMetrics
+{
+    public const float outerRadius = 2.5f;
+    public const float innerRadius = outerRadius * 0.866025404f;
+}

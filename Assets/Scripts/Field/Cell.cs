@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Cell : Subject, IPointerClickHandler
+public class Cell : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private Color _glowColor;
 

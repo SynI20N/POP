@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class Field : Observer
+public class Field : MonoBehaviour
 {
     [SerializeField] private int _hight;
     [SerializeField] private int _length;
@@ -17,14 +17,6 @@ public class Field : Observer
     {
         _field = new Cell[_length, _hight];
         CreateField();
-    }
-
-    private void Start()
-    {
-        foreach (var cell in )
-        {
-            cell.RegisterObserver(this);
-        }
     }
 
     private void CreateField()
@@ -60,13 +52,5 @@ public class Field : Observer
         position.z = z * (CellMetrics.outerRadius * 1.5f);
 
         return position;
-    }
-
-    public override void OnNotify(object value, NotificationType notificationType)
-    {
-        if(notificationType == NotificationType.CellPressed)
-        {
-
-        }
     }
 }
