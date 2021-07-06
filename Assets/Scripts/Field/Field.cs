@@ -9,11 +9,22 @@ public class Field : MonoBehaviour
     [SerializeField] private Cell _cellPrefab;
 
     private Cell[,] _field;
+    private Cell _lightedCell;
 
     private void Awake()
     {
         _field = new Cell[_length, _hight];
         CreateField();
+    }
+
+    private void Start()
+    {
+        Cell.onPointerClick += UnlightPrevCell;
+        _lightedCell = _field[0, 0];
+    }
+    private void OnDestroy()
+    {
+        Cell.onPointerClick -= UnlightPrevCell;
     }
 
     private void CreateField()
@@ -50,5 +61,16 @@ public class Field : MonoBehaviour
         position.z = z * (CellMetrics.outerRadius * 1.5f);
 
         return position;
+    }
+
+    public void UnlightPrevCell(Cell cell)
+    {
+        _lightedCell.Unlight();
+        _lightedCell = cell;
+    }
+
+    public void UnlightCurCell()
+    {
+        _lightedCell.Unlight();
     }
 }
