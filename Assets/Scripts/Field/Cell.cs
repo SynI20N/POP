@@ -20,7 +20,7 @@ public class Cell : MonoBehaviour, IPointerClickHandler
     }
     public void OnPointerClick(PointerEventData eventData)
     {
-
+        onPointerClick.Invoke(this); //here goes onChange, later remove onPointerClick to field
         LightCell();
     }
 

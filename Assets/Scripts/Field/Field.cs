@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+
 public class Field : MonoBehaviour
 {
     [SerializeField] private int _hight;
@@ -54,3 +55,4 @@ public class Field : MonoBehaviour
         return position;
     }
 }
+*/
