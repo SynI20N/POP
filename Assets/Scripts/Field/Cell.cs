@@ -11,6 +11,7 @@ public class Cell : MonoBehaviour, IPointerClickHandler
     private GameObject _cell;
     private Material _cellMaterial;
 
+    public static event Action<Cell> onPointerClick;
     private void Start()
     {
         _cell = gameObject;
@@ -19,10 +20,16 @@ public class Cell : MonoBehaviour, IPointerClickHandler
     }
     public void OnPointerClick(PointerEventData eventData)
     {
+        onPointerClick.Invoke(this); //here goes onChange, later remove onPointerClick to field
         LightCell();
     }
 
     private void LightCell()
+    {
+        SetColor(_glowColor);
+    }
+
+    private void UnlightCell()
     {
         SetColor(_glowColor);
     }
@@ -36,6 +43,4 @@ public class Cell : MonoBehaviour, IPointerClickHandler
     {
         _cellMaterial.SetColor("_EmissionColor", glowColor);
     }
-
-    
 }
