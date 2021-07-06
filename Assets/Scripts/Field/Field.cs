@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 
@@ -22,11 +18,11 @@ public class Field : MonoBehaviour
 
     private void CreateField()
     {
-        for (int x = 0; x < _length; x+=1)
+        for (int x = 0; x < _length; x += 1)
         {
-            for (int z = 0; z < _hight; z+=1)
+            for (int z = 0; z < _hight; z += 1)
             {
-                _field[x,z] = CreateCell(x, z);
+                _field[x, z] = CreateCell(x, z);
             }
         }
     }
@@ -35,7 +31,7 @@ public class Field : MonoBehaviour
     {
         Vector3 position = FromCellCoordinates(x, z);
 
-        Cell cell = _field[x , z] = Instantiate<Cell>(_cellPrefab);
+        Cell cell = _field[x, z] = Instantiate<Cell>(_cellPrefab);
         cell.transform.SetParent(transform, false);
         cell.transform.localPosition = position;
         return cell;

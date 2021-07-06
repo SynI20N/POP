@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using DG.Tweening;
 using static UnityEngine.Vector3;
 
 public class CellPanel : MonoBehaviour
