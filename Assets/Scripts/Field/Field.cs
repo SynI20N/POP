@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 
@@ -13,6 +9,7 @@ public class Field : MonoBehaviour
     [SerializeField] private Cell _cellPrefab;
 
     private Cell[,] _field;
+    private Cell _lightedCell;
 
     private void Awake()
     {
@@ -20,13 +17,23 @@ public class Field : MonoBehaviour
         CreateField();
     }
 
+    private void Start()
+    {
+        Cell.onPointerClick += UnlightPrevCell;
+        _lightedCell = _field[0, 0];
+    }
+    private void OnDestroy()
+    {
+        Cell.onPointerClick -= UnlightPrevCell;
+    }
+
     private void CreateField()
     {
-        for (int x = 0; x < _length; x+=1)
+        for (int x = 0; x < _length; x += 1)
         {
-            for (int z = 0; z < _hight; z+=1)
+            for (int z = 0; z < _hight; z += 1)
             {
-                _field[x,z] = CreateCell(x, z);
+                _field[x, z] = CreateCell(x, z);
             }
         }
     }
@@ -35,7 +42,7 @@ public class Field : MonoBehaviour
     {
         Vector3 position = FromCellCoordinates(x, z);
 
-        Cell cell = _field[x , z] = Instantiate<Cell>(_cellPrefab);
+        Cell cell = _field[x, z] = Instantiate<Cell>(_cellPrefab);
         cell.transform.SetParent(transform, false);
         cell.transform.localPosition = position;
         return cell;
@@ -54,5 +61,16 @@ public class Field : MonoBehaviour
         position.z = z * (CellMetrics.outerRadius * 1.5f);
 
         return position;
+    }
+
+    public void UnlightPrevCell(Cell cell)
+    {
+        _lightedCell.Unlight();
+        _lightedCell = cell;
+    }
+
+    public void UnlightCurCell()
+    {
+        _lightedCell.Unlight();
     }
 }

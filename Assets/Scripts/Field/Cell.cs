@@ -1,15 +1,15 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Cell : MonoBehaviour, IPointerClickHandler
+public class Cell : MonoBehaviour, IPointerClickHandler, ILightable
 {
     [SerializeField] private Color _glowColor;
 
     private GameObject _cell;
     private Material _cellMaterial;
+
+    private Color _defaultColor;
 
     public static event Action<Cell> onPointerClick;
     private void Start()
@@ -17,21 +17,22 @@ public class Cell : MonoBehaviour, IPointerClickHandler
         _cell = gameObject;
         _cellMaterial = _cell.GetComponent<MeshRenderer>().material;
         _cellMaterial.EnableKeyword("_EMISSION");
+        _defaultColor = GetColor();
     }
     public void OnPointerClick(PointerEventData eventData)
     {
-        onPointerClick.Invoke(this); //here goes onChange, later remove onPointerClick to field
-        LightCell();
+        onPointerClick.Invoke(this);
+        Light();
     }
 
-    private void LightCell()
+    public void Light()
     {
         SetColor(_glowColor);
     }
 
-    private void UnlightCell()
+    public void Unlight()
     {
-        SetColor(_glowColor);
+        SetColor(_defaultColor);
     }
 
     private Color GetColor()
