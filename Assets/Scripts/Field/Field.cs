@@ -26,18 +26,19 @@ public class Field : MonoBehaviour
         {
             for (int z = 0; z < _hight; z+=1)
             {
-                CreateCell(x, z);
+                _field[x,z] = CreateCell(x, z);
             }
         }
     }
 
-    private void CreateCell(int x, int z)
+    private Cell CreateCell(int x, int z)
     {
         Vector3 position = FromCellCoordinates(x, z);
 
         Cell cell = _field[x , z] = Instantiate<Cell>(_cellPrefab);
         cell.transform.SetParent(transform, false);
         cell.transform.localPosition = position;
+        return cell;
     }
 
     private Vector3 FromCellCoordinates(int x, int z)
@@ -55,4 +56,3 @@ public class Field : MonoBehaviour
         return position;
     }
 }
-*/
