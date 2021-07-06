@@ -55,9 +55,7 @@ public class Field : MonoBehaviour
         position.x = x * (CellMetrics.innerRadius * 2f);
         position.x = (x + z * 0.5f) * (CellMetrics.innerRadius * 2f);
         position.x = (x + z * 0.5f - z / 2) * (CellMetrics.innerRadius * 2f);
-
         position.y = 0f;
-
         position.z = z * (CellMetrics.outerRadius * 1.5f);
 
         return position;

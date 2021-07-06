@@ -17,7 +17,6 @@ public class CellPanel : MonoBehaviour
         _panel = gameObject;
         _canvasGroup = _panel.GetComponent<CanvasGroup>();
 
-        Close();
         Cell.onPointerClick += Open;
     }
 
