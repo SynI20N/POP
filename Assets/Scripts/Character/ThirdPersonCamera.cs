@@ -14,6 +14,7 @@ public class ThirdPersonCamera : MonoBehaviour
 
         _linkVector = _camera.transform.position;
         _objectTransform = GetComponent<Transform>();
+        _linkVector -= _objectTransform.position;
     }
 
     private void Update()

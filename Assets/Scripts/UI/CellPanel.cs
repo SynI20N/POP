@@ -1,15 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using DG.Tweening;
 using static UnityEngine.Vector3;
 
 public class CellPanel : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _textDescription;
 
-    private const float TweenTime = 0.5f;
+    private const float _tweenTime = 0.5f;
 
     private GameObject _panel;
     private CanvasGroup _canvasGroup;
@@ -19,7 +17,6 @@ public class CellPanel : MonoBehaviour
         _panel = gameObject;
         _canvasGroup = _panel.GetComponent<CanvasGroup>();
 
-        Close();
         Cell.onPointerClick += Open;
     }
 
@@ -44,6 +41,7 @@ public class CellPanel : MonoBehaviour
     {
         _canvasGroup.alpha = alpha;
         _panel.transform.localScale = zero;
-        _panel.transform.DOScale(alpha, TweenTime);
+        _panel.transform.DOKill();
+        _panel.transform.DOScale(alpha, _tweenTime);
     }
 }

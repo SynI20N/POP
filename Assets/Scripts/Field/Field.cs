@@ -1,10 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
-/*public class Field : MonoBehaviour
+
+public class Field : MonoBehaviour
 {
     [SerializeField] private int _hight;
     [SerializeField] private int _length;
@@ -12,6 +9,7 @@ using UnityEngine;
     [SerializeField] private Cell _cellPrefab;
 
     private Cell[,] _field;
+    private Cell _lightedCell;
 
     private void Awake()
     {
@@ -21,30 +19,33 @@ using UnityEngine;
 
     private void Start()
     {
-        foreach (var cell in )
-        {
-            cell.RegisterObserver(this);
-        }
+        Cell.onPointerClick += UnlightPrevCell;
+        _lightedCell = _field[0, 0];
+    }
+    private void OnDestroy()
+    {
+        Cell.onPointerClick -= UnlightPrevCell;
     }
 
     private void CreateField()
     {
-        for (int x = 0; x < _length; x+=1)
+        for (int x = 0; x < _length; x += 1)
         {
-            for (int z = 0; z < _hight; z+=1)
+            for (int z = 0; z < _hight; z += 1)
             {
-                CreateCell(x, z);
+                _field[x, z] = CreateCell(x, z);
             }
         }
     }
 
-    private void CreateCell(int x, int z)
+    private Cell CreateCell(int x, int z)
     {
         Vector3 position = FromCellCoordinates(x, z);
 
-        Cell cell = _field[x , z] = Instantiate<Cell>(_cellPrefab);
+        Cell cell = _field[x, z] = Instantiate<Cell>(_cellPrefab);
         cell.transform.SetParent(transform, false);
         cell.transform.localPosition = position;
+        return cell;
     }
 
     private Vector3 FromCellCoordinates(int x, int z)
@@ -54,20 +55,20 @@ using UnityEngine;
         position.x = x * (CellMetrics.innerRadius * 2f);
         position.x = (x + z * 0.5f) * (CellMetrics.innerRadius * 2f);
         position.x = (x + z * 0.5f - z / 2) * (CellMetrics.innerRadius * 2f);
-
         position.y = 0f;
-
         position.z = z * (CellMetrics.outerRadius * 1.5f);
 
         return position;
     }
 
-    public override void OnNotify(object value, NotificationType notificationType)
+    public void UnlightPrevCell(Cell cell)
     {
-        if(notificationType == NotificationType.CellPressed)
-        {
+        _lightedCell.Unlight();
+        _lightedCell = cell;
+    }
 
-        }
+    public void UnlightCurCell()
+    {
+        _lightedCell.Unlight();
     }
 }
-*/
