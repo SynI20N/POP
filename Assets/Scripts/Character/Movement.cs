@@ -72,14 +72,14 @@ public class Movement : MonoBehaviour
     {
         if (info.Pressed)
         {
-            _animator.SetTrigger("Run");
-            _animator.ResetTrigger("Stop");
+            //_animator.SetTrigger("Run");
+            //_animator.ResetTrigger("Stop");
             Move(info);
         }
         else
         {
-            _animator.SetTrigger("Stop");
-            _animator.ResetTrigger("Run");
+            //_animator.SetTrigger("Stop");
+            //_animator.ResetTrigger("Run");
             Stop();
         }
     }
@@ -92,11 +92,11 @@ public class Movement : MonoBehaviour
 
         Vector3 sum = newForward + newRight;
         _rigidbody.velocity = new Vector3(sum.x, fallSpeed, sum.z);
-
         Vector3 projectedVelocity = new Vector3(sum.x, 0, sum.z);
+
         float moveAngle = SignedAngle(_transform.forward, projectedVelocity, _transform.up);
         Vector3 newRotation = new Vector3(0, _transform.eulerAngles.y + moveAngle, 0);
-        _sequence.Append(_transform.DORotate(newRotation, 0.5f));
+        _sequence.Append(_transform.DORotate(newRotation, 0.3f));
     }
 
     private void Stop()

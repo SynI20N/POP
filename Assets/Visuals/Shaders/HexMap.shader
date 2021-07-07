@@ -17,14 +17,14 @@ Shader "Custom/HexMap"
 
         CGPROGRAM
 
-        #pragma surface surf Lambert alpha:fade vertex:vert
+        #pragma surface surf Lambert alpha:fade vertex:vert interpolateview noshadow
 
-        #pragma target 5.0
+        #pragma target 3.0
 
         sampler2D _MainTex;
         sampler2D _NormalMap;
         sampler2D _HeightMap;
-        float _HeightPower;
+        half _HeightPower;
 
         struct Input
         {
@@ -34,7 +34,7 @@ Shader "Custom/HexMap"
             float2 uv_MainTex;
         };
 
-        float _Extrusion;
+        half _Extrusion;
 
         void vert(inout appdata_full v) 
         {
