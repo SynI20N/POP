@@ -16,6 +16,6 @@ public class ResourceSpawner : MonoBehaviour
     {
         GameObject resource = Instantiate(_resourcePrefab) as GameObject;
         resource.transform.SetParent(gameObject.transform, false);
-        resource.transform.localScale = new Vector3 (0.35f, 1f, 0.35f);
+        resource.transform.localScale = new Vector3 (0.35f, 0.35f, 0.35f);
     }
 }
