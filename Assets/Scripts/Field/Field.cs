@@ -25,7 +25,9 @@ public class Field : MonoBehaviour
     {
         _fieldMaterial = gameObject.GetComponent<Terrain>().materialTemplate;
         _fieldMaterial.EnableKeyword("POS");
-        Cell.OnClick += Light;
+        
+        Cell.onClick += Light;
+        CellPanel.onExit += Unlight;
         Timer.spawnSpawner += SpawnSpawner;
     }
 
@@ -101,5 +103,10 @@ public class Field : MonoBehaviour
     {
         Vector4 position = new Vector4(x, z, 0, 0);
         _fieldMaterial.SetVector("_Pos", position);
+    }
+
+    private void Unlight(float y)
+    {
+        Debug.Log("Exit");
     }
 }

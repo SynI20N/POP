@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using TMPro;
 using UnityEngine;
 using static UnityEngine.Vector3;
@@ -12,22 +13,25 @@ public class CellPanel : MonoBehaviour
     private GameObject _panel;
     private CanvasGroup _canvasGroup;
 
+    public static event Action<float> onExit;
+
     private void Start()
     {
         _panel = gameObject;
         _canvasGroup = _panel.GetComponent<CanvasGroup>();
 
-        //Cell.onPointerClick += Open;
+        Cell.onPointerClick += Open;
     }
 
     private void OnDestroy()
     {
-        //Cell.onPointerClick -= Open;
+        Cell.onPointerClick -= Open;
     }
 
     public void Close()
     {
         Animate(0f);
+        onExit.Invoke(-1f);
     }
 
     public void Open(Cell cell)
