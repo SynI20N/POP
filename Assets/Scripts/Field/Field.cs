@@ -105,8 +105,9 @@ public class Field : MonoBehaviour
         _fieldMaterial.SetVector("_Pos", position);
     }
 
-    private void Unlight(float y)
+    private void Unlight(float c)
     {
-        Debug.Log("Exit");
+        Vector4 position = new Vector4(c, c, 0, 0);
+        _fieldMaterial.SetVector("_Pos", position);
     }
 }
