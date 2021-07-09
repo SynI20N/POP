@@ -72,14 +72,14 @@ public class Movement : MonoBehaviour
     {
         if (info.Pressed)
         {
-            //_animator.SetTrigger("Run");
-            //_animator.ResetTrigger("Stop");
+            _animator.SetTrigger("Run");
+            _animator.ResetTrigger("Stop");
             Move(info);
         }
         else
         {
-            //_animator.SetTrigger("Stop");
-            //_animator.ResetTrigger("Run");
+            _animator.SetTrigger("Stop");
+            _animator.ResetTrigger("Run");
             Stop();
         }
     }
