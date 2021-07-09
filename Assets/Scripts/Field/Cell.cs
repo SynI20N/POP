@@ -7,7 +7,7 @@ public class Cell : MonoBehaviour, ICellObjects, ISpawnable, IPointerClickHandle
 {
     private List<GameObject> _objects = new List<GameObject>();
 
-    public static event Action<float,float> onClick;
+    public static event Action<float, float> onClick;
     public static event Action<Cell> onPointerClick;
 
     private bool _spawnAbility = true;

@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainMenuControls : MonoBehaviour
 {
-    [SerializeField] private Scene[] _scenes = new Scene[2];    
+    [SerializeField] private Scene[] _scenes = new Scene[2];
     public void OpenGame()
     {
         SceneManager.LoadSceneAsync("Game", LoadSceneMode.Single);

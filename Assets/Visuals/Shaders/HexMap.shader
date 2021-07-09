@@ -22,7 +22,7 @@ Shader "Custom/HexMap"
 
         #pragma surface surf Lambert alpha:fade vertex:vert interpolateview
 
-        #pragma target 3.0
+        #pragma target 2.5
 
         sampler2D _MainTex;
         sampler2D _NormalMap;
@@ -61,9 +61,7 @@ Shader "Custom/HexMap"
         {
             if (abs(IN.worldPos.x - Pos.x) < _r 
              && IN.worldPos.z < lineFunc(IN, Pos)
-             //&& IN.worldPos.z < -lineFunc(IN, Pos)
              && IN.worldPos.z > lineFunc(IN, Pos) - 2 * _R + abs(Pos.x - IN.worldPos.x) * 1.2
-             //&& IN.worldPos.z > -lineFunc(IN, Pos) - 2 * _R
                 )
             {
                 return true;

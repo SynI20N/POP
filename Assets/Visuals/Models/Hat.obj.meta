@@ -3,7 +3,12 @@ guid: c639fd28daf607a49943c24f2cdda692
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 18453_Bucket_HatMat
+    second: {fileID: 2100000, guid: 84f73dc49053304498682f2bbb076584, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

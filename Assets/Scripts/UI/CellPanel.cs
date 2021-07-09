@@ -13,7 +13,7 @@ public class CellPanel : MonoBehaviour
     private GameObject _panel;
     private CanvasGroup _canvasGroup;
 
-    public static event Action<float> onExit;
+    public static event Action onExit;
 
     private void Start()
     {
@@ -31,7 +31,7 @@ public class CellPanel : MonoBehaviour
     public void Close()
     {
         Animate(0f);
-        onExit.Invoke(-100f);
+        onExit.Invoke();
     }
 
     public void Open(Cell cell)
