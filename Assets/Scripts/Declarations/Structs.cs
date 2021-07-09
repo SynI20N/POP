@@ -1,4 +1,5 @@
 using UnityEngine;
+using static System.Math;
 
 public struct Plane
 {
@@ -12,6 +13,7 @@ public struct TouchInfo
 {
     public bool Pressed;
     public Vector2 Direction { get => (CurrentPos - InitPos).normalized; }
+    public float Distance { get => (CurrentPos - InitPos).magnitude; }
     public Vector2 InitPos;
     public Vector2 CurrentPos;
 }

@@ -70,17 +70,18 @@ public class Movement : MonoBehaviour
 
     public void EvaluateInfo(TouchInfo info)
     {
-        if (info.Pressed)
-        {
-            _animator.SetTrigger("Run");
-            _animator.ResetTrigger("Stop");
-            Move(info);
-        }
-        else
+        if (!info.Pressed || info.Distance < 1.0f)
         {
             _animator.SetTrigger("Stop");
             _animator.ResetTrigger("Run");
             Stop();
+            return;
+        }
+        else
+        {
+            _animator.SetTrigger("Run");
+            _animator.ResetTrigger("Stop");
+            Move(info);
         }
     }
 
