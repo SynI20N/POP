@@ -31,7 +31,7 @@ public class CellPanel : MonoBehaviour
     public void Close()
     {
         Animate(0f);
-        onExit.Invoke(-1f);
+        onExit.Invoke(-100f);
     }
 
     public void Open(Cell cell)
