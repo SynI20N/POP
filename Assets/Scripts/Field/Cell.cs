@@ -3,16 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Cell : MonoBehaviour, ICellObjects, ISpawnable
+public class Cell : MonoBehaviour, ICellObjects, ISpawnable, IPointerClickHandler
 {
     private List<GameObject> _objects = new List<GameObject>();
+    public static event Action<float,float> OnClick;
 
     private bool _spawnAbility = true;
-
-    private void Start()
-    {
-        
-    }
 
     public void AddObject(GameObject gameObject)
     {
@@ -27,5 +23,10 @@ public class Cell : MonoBehaviour, ICellObjects, ISpawnable
     public void SetAbility(bool ability)
     {
         _spawnAbility = ability;
+    }
+    public void OnPointerClick(PointerEventData pointerEvent)
+    {
+        OnClick.Invoke(gameObject.transform.position.x,
+                       gameObject.transform.position.z);
     }
 }

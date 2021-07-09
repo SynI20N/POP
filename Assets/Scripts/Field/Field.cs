@@ -1,19 +1,30 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Field : MonoBehaviour, IPointerClickHandler
+public class Field : MonoBehaviour
 {
     [SerializeField] private int _hight;
     [SerializeField] private int _length;
 
     [SerializeField] private Cell _cellPrefab;
+    [SerializeField] private Material _fieldMaterial;   //imrove
 
     private Cell[,] _field;
+
+    
 
     private void Awake()
     {
         _field = new Cell[_length, _hight];
         CreateField();
+    }
+
+    private void Start()
+    {
+        _fieldMaterial = gameObject.GetComponent<Terrain>().materialTemplate;
+        _fieldMaterial.EnableKeyword("POS");
+        Cell.OnClick += Light;
     }
 
     private void CreateField()
@@ -44,8 +55,8 @@ public class Field : MonoBehaviour, IPointerClickHandler
         position.x = x * (CellMetrics.innerRadius * 2f);
         position.x = (x + z * 0.5f) * (CellMetrics.innerRadius * 2f);
         position.x = (x + z * 0.5f - z / 2) * (CellMetrics.innerRadius * 2f);
-        position.x += 1.5f;
-        position.y = 0.15f;
+        position.x += 1.56f;
+        position.y = 0f;
         position.z = z * (CellMetrics.outerRadius * 1.5f);
 
         return position;
@@ -56,8 +67,8 @@ public class Field : MonoBehaviour, IPointerClickHandler
         int x = 0;
         int z = 0;       
         
-        x = Random.Range(0, _length);
-        z = Random.Range(0, _hight);
+        x = UnityEngine.Random.Range(0, _length);
+        z = UnityEngine.Random.Range(0, _hight);
 
         if (_field[x, z].CheckSpawn())
         {
@@ -72,8 +83,10 @@ public class Field : MonoBehaviour, IPointerClickHandler
         cell.gameObject.AddComponent<ResourceSpawner>();
     }
 
-    public void OnPointerClick(PointerEventData pointerEvent)
+    private void Light(float x, float z)
     {
-        //pointerEvent.pointerCurrentRaycast.worldPosition.x
+        Vector4 position = new Vector4(x, z, 0, 0);
+        _fieldMaterial.SetVector("_Pos", position);
+        Debug.Log("Click");
     }
 }
