@@ -3,6 +3,10 @@
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
 /[Ll]ibrary/
+/[Aa]ssets/[Bb]akery/
+Assets/Bakery.meta
+/[Aa]ssets/[Ee]ditor/
+Assets/Editor.meta
 /[Tt]emp/
 /[Oo]bj/
 /[Bb]uild/
