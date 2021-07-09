@@ -61,9 +61,7 @@ Shader "Custom/HexMap"
         {
             if (abs(IN.worldPos.x - Pos.x) < _r 
              && IN.worldPos.z < lineFunc(IN, Pos)
-             //&& IN.worldPos.z < -lineFunc(IN, Pos)
              && IN.worldPos.z > lineFunc(IN, Pos) - 2 * _R + abs(Pos.x - IN.worldPos.x) * 1.2
-             //&& IN.worldPos.z > -lineFunc(IN, Pos) - 2 * _R
                 )
             {
                 return true;

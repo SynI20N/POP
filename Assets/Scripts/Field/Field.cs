@@ -1,23 +1,20 @@
-using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-
-//to add Spawner use /*AddResourceSpawner(_field[x, z]);*/
 public class Field : MonoBehaviour
 {
-    [SerializeField] private int _hight;
+    [SerializeField] private int _height;
     [SerializeField] private int _length;
 
-    [SerializeField] private Cell _cellPrefab;   
+    [SerializeField] private Cell _cellPrefab;
 
     private Cell[,] _field;
+    private const int _inTheMiddleOfNowhere = -100;
 
     private Material _fieldMaterial;
 
     private void Awake()
     {
-        _field = new Cell[_length, _hight];
+        _field = new Cell[_length, _height];
         CreateField();
     }
 
@@ -25,7 +22,7 @@ public class Field : MonoBehaviour
     {
         _fieldMaterial = gameObject.GetComponent<Terrain>().materialTemplate;
         _fieldMaterial.EnableKeyword("POS");
-        
+
         Cell.onClick += Light;
         CellPanel.onExit += Unlight;
         Timer.spawnSpawner += SpawnSpawner;
@@ -35,7 +32,7 @@ public class Field : MonoBehaviour
     {
         for (int x = 0; x < _length; x += 1)
         {
-            for (int z = 0; z < _hight; z += 1)
+            for (int z = 0; z < _height; z += 1)
             {
                 _field[x, z] = CreateCell(x, z);
             }
@@ -46,7 +43,7 @@ public class Field : MonoBehaviour
     {
         Vector3 position = FromCellCoordinates(x, z);
 
-        Cell cell = Instantiate<Cell>(_cellPrefab);
+        Cell cell = Instantiate(_cellPrefab);
         cell.transform.SetParent(transform, false);
         cell.transform.localPosition = position;
         return cell;
@@ -69,10 +66,10 @@ public class Field : MonoBehaviour
     private Cell ChooseRandomCell()
     {
         int x = 0;
-        int z = 0;       
-        
+        int z = 0;
+
         x = UnityEngine.Random.Range(0, _length);
-        z = UnityEngine.Random.Range(0, _hight);
+        z = UnityEngine.Random.Range(0, _height);
 
         if (_field[x, z].CheckSpawn())
         {
@@ -93,7 +90,7 @@ public class Field : MonoBehaviour
     private void SpawnSpawner()
     {
         Cell cell = ChooseRandomCell();
-        if(cell != null)
+        if (cell != null)
         {
             AddResourceSpawner(cell);
         }
@@ -105,9 +102,9 @@ public class Field : MonoBehaviour
         _fieldMaterial.SetVector("_Pos", position);
     }
 
-    private void Unlight(float c)
+    private void Unlight()
     {
-        Vector4 position = new Vector4(c, c, 0, 0);
+        Vector4 position = new Vector4(_inTheMiddleOfNowhere, _inTheMiddleOfNowhere, 0, 0);
         _fieldMaterial.SetVector("_Pos", position);
     }
 }

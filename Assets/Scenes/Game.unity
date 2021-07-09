@@ -10882,7 +10882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bed14c80321faaa41878d92d1db93508, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hight: 99
+  _height: 99
   _length: 99
   _cellPrefab: {fileID: 2915637879258470760, guid: 10b086255b05c8a489f4681c2339bfbb,
     type: 3}

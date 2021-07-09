@@ -1,5 +1,4 @@
 using UnityEngine;
-using static System.Math;
 
 public struct Plane
 {
