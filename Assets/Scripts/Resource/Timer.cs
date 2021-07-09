@@ -21,7 +21,7 @@ public class Timer : MonoBehaviour
         if (Time.time > _timer + _respawnTime)
         {
             AddTime();
-            spawnResource();
+            //spawnResource();
         }
     }
 
