@@ -26,6 +26,7 @@ public class Field : MonoBehaviour
         _fieldMaterial = gameObject.GetComponent<Terrain>().materialTemplate;
         _fieldMaterial.EnableKeyword("POS");
         Cell.OnClick += Light;
+        Timer.spawnSpawner += SpawnSpawner;
     }
 
     private void CreateField()
@@ -84,6 +85,15 @@ public class Field : MonoBehaviour
         if (cell.CheckSpawn())
         {
             cell.gameObject.AddComponent<ResourceSpawner>();
+        }
+    }
+
+    private void SpawnSpawner()
+    {
+        Cell cell = ChooseRandomCell();
+        if(cell != null)
+        {
+            AddResourceSpawner(cell);
         }
     }
 

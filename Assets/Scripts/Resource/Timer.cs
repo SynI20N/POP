@@ -5,28 +5,42 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    [SerializeField] private float _respawnTime;
+    [SerializeField] private float _resourceRespawnTime;
+    [SerializeField] private float _spawnerRespawnTime;
 
     public static event Action spawnResource;
+    public static event Action spawnSpawner;
 
-    private float _timer;
+    private float _resourceTimer;
+    private float _spawnerTimer;
 
     private void Start()
     {
-        _timer = Time.time;
+        _resourceTimer = Time.time;
+        _spawnerTimer = _resourceTimer;
     }
 
     private void Update()
     {
-        if (Time.time > _timer + _respawnTime)
+        if (Time.time > _resourceTimer + _resourceRespawnTime && spawnResource != null)
         {
-            AddTime();
+            AddResourceTime();
             spawnResource();
+        }
+        if (Time.time > _spawnerTimer + _spawnerRespawnTime)
+        {
+            AddSpawnerTime();
+            spawnSpawner();
         }
     }
 
-    private void AddTime()
+    private void AddResourceTime()
     {
-        _timer += _respawnTime;
+        _resourceTimer += _resourceRespawnTime;
+    }
+
+    private void AddSpawnerTime()
+    {
+        _spawnerTimer += _spawnerRespawnTime;
     }
 }
