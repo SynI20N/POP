@@ -6,8 +6,8 @@ using UnityEngine.EventSystems;
 //to add Spawner use /*AddResourceSpawner(_field[x, z]);*/
 public class Field : MonoBehaviour
 {
-    [SerializeField] private int _hight;
-    [SerializeField] private int _length;
+    [SerializeField] private int _height;
+    [SerializeField] private int _width;
 
     [SerializeField] private Cell _cellPrefab;   
 
@@ -17,7 +17,7 @@ public class Field : MonoBehaviour
 
     private void Awake()
     {
-        _field = new Cell[_length, _hight];
+        _field = new Cell[_width, _height];
         CreateField();
     }
 
@@ -33,9 +33,9 @@ public class Field : MonoBehaviour
 
     private void CreateField()
     {
-        for (int x = 0; x < _length; x += 1)
+        for (int x = 0; x < _width; x += 1)
         {
-            for (int z = 0; z < _hight; z += 1)
+            for (int z = 0; z < _height; z += 1)
             {
                 _field[x, z] = CreateCell(x, z);
             }
@@ -71,8 +71,8 @@ public class Field : MonoBehaviour
         int x = 0;
         int z = 0;       
         
-        x = UnityEngine.Random.Range(0, _length);
-        z = UnityEngine.Random.Range(0, _hight);
+        x = UnityEngine.Random.Range(0, _width);
+        z = UnityEngine.Random.Range(0, _height);
 
         if (_field[x, z].CheckSpawn())
         {
