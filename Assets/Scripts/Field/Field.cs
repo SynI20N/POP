@@ -1,7 +1,7 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-
-public class Field : MonoBehaviour
+public class Field : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private int _hight;
     [SerializeField] private int _length;
@@ -9,22 +9,11 @@ public class Field : MonoBehaviour
     [SerializeField] private Cell _cellPrefab;
 
     private Cell[,] _field;
-    private Cell _lightedCell;
 
     private void Awake()
     {
         _field = new Cell[_length, _hight];
         CreateField();
-    }
-
-    private void Start()
-    {
-        Cell.onPointerClick += UnlightPrevCell;
-        _lightedCell = _field[0, 0];
-    }
-    private void OnDestroy()
-    {
-        Cell.onPointerClick -= UnlightPrevCell;
     }
 
     private void CreateField()
@@ -42,7 +31,7 @@ public class Field : MonoBehaviour
     {
         Vector3 position = FromCellCoordinates(x, z);
 
-        Cell cell = _field[x, z] = Instantiate<Cell>(_cellPrefab);
+        Cell cell = Instantiate<Cell>(_cellPrefab);
         cell.transform.SetParent(transform, false);
         cell.transform.localPosition = position;
         return cell;
@@ -55,20 +44,36 @@ public class Field : MonoBehaviour
         position.x = x * (CellMetrics.innerRadius * 2f);
         position.x = (x + z * 0.5f) * (CellMetrics.innerRadius * 2f);
         position.x = (x + z * 0.5f - z / 2) * (CellMetrics.innerRadius * 2f);
-        position.y = 0f;
+        position.x += 1.5f;
+        position.y = 0.15f;
         position.z = z * (CellMetrics.outerRadius * 1.5f);
 
         return position;
     }
 
-    public void UnlightPrevCell(Cell cell)
+    private Cell ChooseRandomCell()
     {
-        _lightedCell.Unlight();
-        _lightedCell = cell;
+        int x = 0;
+        int z = 0;       
+        
+        x = Random.Range(0, _length);
+        z = Random.Range(0, _hight);
+
+        if (_field[x, z].CheckSpawn())
+        {
+            return _field[x, z];
+        }
+        else
+            return null;
     }
 
-    public void UnlightCurCell()
+    private void AddResourceSpawner(Cell cell)
     {
-        _lightedCell.Unlight();
+        cell.gameObject.AddComponent<ResourceSpawner>();
+    }
+
+    public void OnPointerClick(PointerEventData pointerEvent)
+    {
+        //pointerEvent.pointerCurrentRaycast.worldPosition.x
     }
 }

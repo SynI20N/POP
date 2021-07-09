@@ -17,12 +17,12 @@ public class CellPanel : MonoBehaviour
         _panel = gameObject;
         _canvasGroup = _panel.GetComponent<CanvasGroup>();
 
-        Cell.onPointerClick += Open;
+        //Cell.onPointerClick += Open;
     }
 
     private void OnDestroy()
     {
-        Cell.onPointerClick -= Open;
+        //Cell.onPointerClick -= Open;
     }
 
     public void Close()

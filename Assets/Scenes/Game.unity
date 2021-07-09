@@ -9623,6 +9623,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1179268717}
   - component: {fileID: 1179268716}
+  - component: {fileID: 1179268715}
+  - component: {fileID: 1179268718}
   m_Layer: 0
   m_Name: Field
   m_TagString: Untagged
@@ -9630,6 +9632,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
+--- !u!114 &1179268715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179268714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bed14c80321faaa41878d92d1db93508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hight: 9
+  _length: 9
+  _cellPrefab: {fileID: 2915637879258470760, guid: 10b086255b05c8a489f4681c2339bfbb,
+    type: 3}
+  _resourceRespawn: 5
 --- !u!218 &1179268716
 Terrain:
   m_ObjectHideFlags: 0
@@ -9637,7 +9656,7 @@ Terrain:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1179268714}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: 1c34b13bc49870f46bd69e3083e3bab5, type: 2}
   m_TreeDistance: 5000
@@ -9677,6 +9696,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1179268718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179268714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ad9f70ee19ff6141924e321b312cd53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _resourceMinePrefab: {fileID: 3260842304628613653, guid: 6a0d16359b428b34a9cce8a9b488d3bf,
+    type: 3}
 --- !u!4 &1183473136 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 527a1c032ece4d8469ff1a34955de264,

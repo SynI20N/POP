@@ -18,6 +18,6 @@ public struct TouchInfo
 
 public struct CellMetrics
 {
-    public const float outerRadius = 2.5f;
+    public const float outerRadius = 1.75f;
     public const float innerRadius = outerRadius * 0.866025404f;
 }

@@ -1,47 +1,31 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Cell : MonoBehaviour, IPointerClickHandler, ILightable
+public class Cell : MonoBehaviour, ICellObjects, ISpawnable
 {
-    [SerializeField] private Color _glowColor;
+    private List<GameObject> _objects = new List<GameObject>();
 
-    private GameObject _cell;
-    private Material _cellMaterial;
+    private bool _spawnAbility = true;
 
-    private Color _defaultColor;
-
-    public static event Action<Cell> onPointerClick;
     private void Start()
     {
-        _cell = gameObject;
-        _cellMaterial = _cell.GetComponent<MeshRenderer>().material;
-        _cellMaterial.EnableKeyword("_EMISSION");
-        _defaultColor = GetColor();
-    }
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        onPointerClick.Invoke(this);
-        Light();
+        
     }
 
-    public void Light()
+    public void AddObject(GameObject gameObject)
     {
-        SetColor(_glowColor);
+        _objects.Add(gameObject);
     }
 
-    public void Unlight()
+    public bool CheckSpawn()
     {
-        SetColor(_defaultColor);
+        return _spawnAbility;
     }
 
-    private Color GetColor()
+    public void SetAbility(bool ability)
     {
-        return _cellMaterial.GetColor("_EmissionColor");
-    }
-
-    private void SetColor(Color glowColor)
-    {
-        _cellMaterial.SetColor("_EmissionColor", glowColor);
+        _spawnAbility = ability;
     }
 }
