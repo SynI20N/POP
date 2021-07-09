@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class ResourceSpawner : MonoBehaviour
 {
-    [SerializeField] private static Resource _resourcePrefab;
 
+    private Object _resourcePrefab;
     private void Start()
     {
         Timer.spawnResource += CreateResource;
+        _resourcePrefab = Resources.Load<GameObject>("Prefabs/Resource");
     }
 
-    private void CreateResource()//start on event
+    private void CreateResource()
     {
-        Resource resource = Instantiate<Resource>(_resourcePrefab);
+        GameObject resource = Instantiate(_resourcePrefab) as GameObject;
         resource.transform.SetParent(gameObject.transform, false);
         resource.transform.localScale = new Vector3 (0.35f, 1f, 0.35f);
-        Debug.Log("Resource spawned");
     }
 }

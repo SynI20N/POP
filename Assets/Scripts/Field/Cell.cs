@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 public class Cell : MonoBehaviour, ICellObjects, ISpawnable, IPointerClickHandler
 {
     private List<GameObject> _objects = new List<GameObject>();
+
     public static event Action<float,float> OnClick;
 
     private bool _spawnAbility = true;

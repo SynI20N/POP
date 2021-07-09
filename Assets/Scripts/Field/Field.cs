@@ -2,17 +2,18 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+
+//to add Spawner use /*AddResourceSpawner(_field[x, z]);*/
 public class Field : MonoBehaviour
 {
     [SerializeField] private int _hight;
     [SerializeField] private int _length;
 
-    [SerializeField] private Cell _cellPrefab;
-    [SerializeField] private Material _fieldMaterial;   //imrove
+    [SerializeField] private Cell _cellPrefab;   
 
     private Cell[,] _field;
 
-    
+    private Material _fieldMaterial;
 
     private void Awake()
     {
@@ -80,13 +81,15 @@ public class Field : MonoBehaviour
 
     private void AddResourceSpawner(Cell cell)
     {
-        cell.gameObject.AddComponent<ResourceSpawner>();
+        if (cell.CheckSpawn())
+        {
+            cell.gameObject.AddComponent<ResourceSpawner>();
+        }
     }
 
     private void Light(float x, float z)
     {
         Vector4 position = new Vector4(x, z, 0, 0);
         _fieldMaterial.SetVector("_Pos", position);
-        Debug.Log("Click");
     }
 }
