@@ -22,7 +22,7 @@ Shader "Custom/HexMap"
 
         #pragma surface surf Lambert alpha:fade vertex:vert interpolateview
 
-        #pragma target 3.0
+        #pragma target 2.5
 
         sampler2D _MainTex;
         sampler2D _NormalMap;
