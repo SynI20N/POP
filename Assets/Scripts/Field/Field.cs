@@ -3,11 +3,7 @@ using UnityEngine;
 public class Field : MonoBehaviour
 {
     [SerializeField] private int _height;
-<<<<<<< HEAD
     [SerializeField] private int _width;
-=======
-    [SerializeField] private int _length;
->>>>>>> bf857f53111256ada1e9d469f5a600de1717d487
 
     [SerializeField] private Cell _cellPrefab;
 
@@ -18,11 +14,7 @@ public class Field : MonoBehaviour
 
     private void Awake()
     {
-<<<<<<< HEAD
         _field = new Cell[_width, _height];
-=======
-        _field = new Cell[_length, _height];
->>>>>>> bf857f53111256ada1e9d469f5a600de1717d487
         CreateField();
     }
 
@@ -74,15 +66,9 @@ public class Field : MonoBehaviour
     private Cell ChooseRandomCell()
     {
         int x = 0;
-<<<<<<< HEAD
         int z = 0;       
         
         x = UnityEngine.Random.Range(0, _width);
-=======
-        int z = 0;
-
-        x = UnityEngine.Random.Range(0, _length);
->>>>>>> bf857f53111256ada1e9d469f5a600de1717d487
         z = UnityEngine.Random.Range(0, _height);
 
         if (_field[x, z].CheckSpawn())
