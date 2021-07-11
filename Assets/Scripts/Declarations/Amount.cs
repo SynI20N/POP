@@ -7,18 +7,13 @@ public class Amount
 
     public int Decrease(int amount)
     {
-        if(!Assert(amount, 0, _currentAmount))
+        if (!Assert(amount, 0, _currentAmount))
         {
             _currentAmount = 0;
             return amount - _currentAmount;
         }
         _currentAmount -= amount;
         return 0;
-    }
-
-    public void DecreaseToZero()
-    {
-        _currentAmount = 0;
     }
 
     public int Increase(int amount)
@@ -35,7 +30,7 @@ public class Amount
     private bool Assert(int value, int min, int max)
     {
         int clampedValue = clamp(value, min, max);
-        if(clampedValue != value)
+        if (clampedValue != value)
         {
             return false;
         }
@@ -49,7 +44,7 @@ public class Amount
 
     public bool IsFull()
     {
-        if(_currentAmount >= _maxAmount)
+        if (_currentAmount >= _maxAmount)
         {
             return true;
         }
@@ -58,7 +53,7 @@ public class Amount
             return false;
         }
     }
-    
+
     public void SetMax(int maxAmount)
     {
         _maxAmount = maxAmount;

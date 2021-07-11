@@ -1,11 +1,6 @@
-using Microsoft.Unity.VisualStudio.Editor;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class UI_Inventory : MonoBehaviour
 {
@@ -27,10 +22,10 @@ public class UI_Inventory : MonoBehaviour
     {
         _inventory = inventory;
         inventory.OnItemListChanged += Inventory_OnItemListChanged;
-        
+
     }
 
-    private void Inventory_OnItemListChanged(object sender, EventArgs e)
+    private void Inventory_OnItemListChanged()
     {
         RefreshInventoryItems();
     }
@@ -45,7 +40,7 @@ public class UI_Inventory : MonoBehaviour
             itemSlotRectTransform.gameObject.SetActive(true);
 
             SetPosition(itemSlotRectTransform, x, y);
-            if(x > _slotsInLenght)
+            if (x > _slotsInLenght)
             {
                 x = 0;
                 y++;
@@ -82,7 +77,7 @@ public class UI_Inventory : MonoBehaviour
     private void SetText(TextMeshProUGUI uiText, Item item)
     {
         if (item.Amount.GetAmount() > 1)
-        { 
+        {
             uiText.SetText(item.Amount.GetAmount().ToString());
         }
         else
