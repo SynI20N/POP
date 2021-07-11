@@ -5,13 +5,20 @@ public class Amount
     private int _currentAmount;
     private int _maxAmount = 100;
 
-    public void Decrease(int amount)
+    public int Decrease(int amount)
     {
         if(!Assert(amount, 0, _currentAmount))
         {
-            return;
+            _currentAmount = 0;
+            return amount - _currentAmount;
         }
         _currentAmount -= amount;
+        return 0;
+    }
+
+    public void DecreaseToZero()
+    {
+        _currentAmount = 0;
     }
 
     public int Increase(int amount)

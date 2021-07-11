@@ -2,10 +2,12 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using System.ComponentModel;
 
 public class Inventory: MonoBehaviour
 {
     [SerializeField] private UI_Inventory _uiInventory;
+    [SerializeField] private int _maxSlotAmount;
 
     private List<Item> _itemList;
 
@@ -15,34 +17,68 @@ public class Inventory: MonoBehaviour
     {
         _uiInventory.SetInventory(this);
     }
-    public void Start()
+    private void Start()
     {
         _itemList = new List<Item>();
     }
 
+    private bool CanAdd(Item item)
+    {
+        if(_itemList.Count == _maxSlotAmount && !WillLastBeFull(item))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    private bool WillLastBeFull(Item item)
+    {
+        var items = ChooseItems(item);
+        return false;
+    }
+
+    private bool CanRemove(Item item)
+    {
+        return true;
+    }
+
+    private IEnumerable<Item> ChooseItems(Item item)
+    {
+        return from invItem in _itemList
+               where invItem.GetSprite() == item.GetSprite()
+               select invItem;
+    }
+
     public void AddItem(Item item)
     {
+        if(!CanAdd(item))
+        {
+            return;
+        }
         if(item.IsStackable())
         {
-            bool itemAlreadyInInventory = false;
+            var choosedItems = from invItem in _itemList
+                               where invItem.GetSprite() == item.GetSprite() &&
+                               !invItem.Amount.IsFull()
+                               select invItem; ;
 
-            var choosedItems = from inventoryItem in _itemList 
-                               where inventoryItem.GetSprite() == item.GetSprite()
-                               select inventoryItem;
+            Item inventoryItem = choosedItems.FirstOrDefault();
 
-            foreach (Item inventoryItem in choosedItems)
+            if (inventoryItem != null)
             {
-                if(!inventoryItem.Amount.IsFull())
+                int diffAmount = inventoryItem.Amount.Increase(item.Amount.GetAmount());
+                if (diffAmount > 0)
                 {
-                    int diffAmount = inventoryItem.Amount.Increase(item.Amount.GetAmount());
-                    if(diffAmount > 0)
-                    {
-                        itemAlreadyInInventory = true;
-                    }
-                    
+                    item.Amount.DecreaseToZero();
+                    item.Amount.Increase(diffAmount);
+
+                    _itemList.Add(item);
                 }
             }
-            if(!itemAlreadyInInventory)
+            else
             {
                 _itemList.Add(item);
             }
@@ -56,18 +92,32 @@ public class Inventory: MonoBehaviour
 
     public void RemoveItem(Item item)
     {
+        if (!CanRemove(item))
+        {
+            return;
+        }
         if (item.IsStackable())
         {
-            Item itemInInventory = null;
-            foreach (Item inventoryItem in _itemList)
+            var choosedItems = ChooseItems(item);
+
+            Item inventoryItem = choosedItems.LastOrDefault();
+
+            if (inventoryItem != null)
             {
-                if (inventoryItem.GetSprite() == item.GetSprite())
-                {
-                    inventoryItem.Amount.Increase(item.Amount.GetAmount());
-                    itemInInventory = inventoryItem;
+                int diffAmount = inventoryItem.Amount.Decrease(item.Amount.GetAmount());
+                if (diffAmount > 0)
+                {                  
+                    _itemList.Remove(inventoryItem);
+                    choosedItems.ToList().Remove(inventoryItem);
+
+                    inventoryItem = choosedItems.LastOrDefault();
+                    
+                    item.Amount.DecreaseToZero();
+                    item.Amount.Increase(diffAmount);
+                    inventoryItem.Amount.Decrease(item.Amount.GetAmount());
                 }
             }
-            if (itemInInventory != null && itemInInventory.Amount.GetAmount() <= 0)
+            else
             {
                 _itemList.Remove(item);
             }
