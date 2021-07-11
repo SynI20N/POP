@@ -13,8 +13,6 @@ public class CellPanel : MonoBehaviour
     private GameObject _panel;
     private CanvasGroup _canvasGroup;
 
-    public static event Action onExit;
-
     private void Start()
     {
         _panel = gameObject;
@@ -31,13 +29,10 @@ public class CellPanel : MonoBehaviour
     public void Close()
     {
         Animate(0f);
-        onExit.Invoke();
     }
 
     public void Open(Cell cell)
     {
-        _textDescription.text = cell.gameObject.name;
-
         Animate(1f);
     }
 

@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Cell : MonoBehaviour, ICellObjects, ISpawnable, IPointerClickHandler
+public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
 {
     private List<GameObject> _objects = new List<GameObject>();
 
-    public static event Action<float, float> onClick;
     public static event Action<Cell> onPointerClick;
 
+    private Transform _thisTransform;
     private bool _spawnAbility = true;
+
+    private void Start()
+    {
+        _thisTransform = gameObject.transform;
+    }
 
     public void AddObject(GameObject gameObject)
     {
@@ -26,10 +31,14 @@ public class Cell : MonoBehaviour, ICellObjects, ISpawnable, IPointerClickHandle
     {
         _spawnAbility = ability;
     }
+
     public void OnPointerClick(PointerEventData pointerEvent)
     {
-        onClick.Invoke(gameObject.transform.position.x,
-                       gameObject.transform.position.z);
         onPointerClick(this);
+    }
+
+    public Transform GetTransform()
+    {
+        return _thisTransform;
     }
 }

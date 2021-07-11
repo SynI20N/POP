@@ -23,16 +23,21 @@ public class Field : MonoBehaviour
         _fieldMaterial = gameObject.GetComponent<Terrain>().materialTemplate;
         _fieldMaterial.EnableKeyword("POS");
 
-        Cell.onClick += Light;
-        CellPanel.onExit += Unlight;
+        Cell.onPointerClick += Light;
         Timer.spawnSpawner += SpawnSpawner;
+    }
+
+    private void OnDestroy()
+    {
+        Cell.onPointerClick -= Light;
+        Timer.spawnSpawner -= SpawnSpawner;
     }
 
     private void CreateField()
     {
-        for (int x = 0; x < _length; x += 1)
+        for (int x = 0; x < _length; x++)
         {
-            for (int z = 0; z < _height; z += 1)
+            for (int z = 0; z < _height; z++)
             {
                 _field[x, z] = CreateCell(x, z);
             }
@@ -65,18 +70,14 @@ public class Field : MonoBehaviour
 
     private Cell ChooseRandomCell()
     {
-        int x = 0;
-        int z = 0;
-
-        x = UnityEngine.Random.Range(0, _length);
-        z = UnityEngine.Random.Range(0, _height);
+        int x = Random.Range(0, _length);
+        int z = Random.Range(0, _height);
 
         if (_field[x, z].CheckSpawn())
         {
             return _field[x, z];
         }
-        else
-            return null;
+        return null;
     }
 
     private void AddResourceSpawner(Cell cell)
@@ -96,13 +97,14 @@ public class Field : MonoBehaviour
         }
     }
 
-    private void Light(float x, float z)
+    private void Light(Cell cell)
     {
-        Vector4 position = new Vector4(x, z, 0, 0);
-        _fieldMaterial.SetVector("_Pos", position);
+        Vector3 position = cell.GetTransform().position;
+        Vector4 shaderPos = new Vector4(position.x, position.z, 0, 0);
+        _fieldMaterial.SetVector("_Pos", shaderPos);
     }
 
-    private void Unlight()
+    public void Unlight()
     {
         Vector4 position = new Vector4(_inTheMiddleOfNowhere, _inTheMiddleOfNowhere, 0, 0);
         _fieldMaterial.SetVector("_Pos", position);
