@@ -11,6 +11,8 @@ Shader "Custom/HexMap"
         _Extrusion("Extrusion Amount", Range(0,2)) = 0.5
         _r("Inner radius of Hex", Range(0,2)) = 0.5
         _R("Outer radius of Hex", Range(0,3)) = 0.5
+        _xOffset("XOffset", Range(-3,3)) = 0.5
+        _yOffset("YOffset", Range(-3,3)) = 0.5
     }
     SubShader
     {
@@ -29,8 +31,10 @@ Shader "Custom/HexMap"
         sampler2D _EmissionMap;
         float4 _Pos;
         half _HeightPower;
-        fixed _r;
-        fixed _R;
+        half _r;
+        half _R;
+        half _xOffset;
+        half _yOffset;
 
         struct Input
         {
@@ -59,9 +63,9 @@ Shader "Custom/HexMap"
 
         bool isInsideHex(Input IN, float2 Pos)
         {
-            if (abs(IN.worldPos.x - Pos.x) < _r 
-             && IN.worldPos.z < lineFunc(IN, Pos)
-             && IN.worldPos.z > lineFunc(IN, Pos) - 2 * _R + abs(Pos.x - IN.worldPos.x) * 1.2
+            if (abs(IN.worldPos.x - (Pos.x - _xOffset)) < _r 
+             && (IN.worldPos.z + _yOffset) < lineFunc(IN, Pos)
+             && (IN.worldPos.z + _yOffset) > lineFunc(IN, Pos) - 2 * _R + abs(Pos.x - IN.worldPos.x) * 1.2
                 )
             {
                 return true;
@@ -71,10 +75,10 @@ Shader "Custom/HexMap"
 
         void surf (Input IN, inout SurfaceOutput o)
         {
-            mask = 1;
+            mask = 0;
             if (isInsideHex(IN, _Pos))
             {
-                mask = 10;
+                mask = 2;
             }
             texOffset.xy = -ParallaxOffset(tex2D(_MainTex, IN.uv_MainTex).r, _HeightPower, IN.viewDir).xy;
             fixed4 c = tex2D(_MainTex, IN.uv_MainTex + texOffset) * _Color;
