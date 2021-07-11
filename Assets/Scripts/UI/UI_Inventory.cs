@@ -39,7 +39,7 @@ public class UI_Inventory : MonoBehaviour
     {
         int x = 0;
         int y = 0;
-        foreach (InventoryItem item in _inventory.GetItemList()) 
+        foreach (Item item in _inventory.GetItemList())
         {
             RectTransform itemSlotRectTransform = CreatRectTransform();
             itemSlotRectTransform.gameObject.SetActive(true);
@@ -79,11 +79,11 @@ public class UI_Inventory : MonoBehaviour
         return itemSlotRectTransform.Find("Amount").GetComponent<TextMeshProUGUI>();
     }
 
-    private void SetText(TextMeshProUGUI uiText, InventoryItem item)
+    private void SetText(TextMeshProUGUI uiText, Item item)
     {
-        if (item.GetAmount() > 1)
+        if (item.Amount.GetAmount() > 1)
         { 
-            uiText.SetText(item.GetAmount().ToString());
+            uiText.SetText(item.Amount.GetAmount().ToString());
         }
         else
         {

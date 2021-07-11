@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ public class Inventory: MonoBehaviour
 {
     [SerializeField] private UI_Inventory _uiInventory;
 
-    private List<InventoryItem> _itemList;
+    private List<Item> _itemList;
 
     public event EventHandler OnItemListChanged;
 
@@ -14,22 +15,31 @@ public class Inventory: MonoBehaviour
     {
         _uiInventory.SetInventory(this);
     }
-    public Inventory()
+    public void Start()
     {
-        _itemList = new List<InventoryItem>();
+        _itemList = new List<Item>();
     }
 
-    public void AddItem(InventoryItem item) 
+    public void AddItem(Item item)
     {
-        if(item.isStackable())
+        if(item.IsStackable())
         {
             bool itemAlreadyInInventory = false;
-            foreach (InventoryItem inventoryItem in _itemList)
+
+            var choosedItems = from inventoryItem in _itemList 
+                               where inventoryItem.GetSprite() == item.GetSprite()
+                               select inventoryItem;
+
+            foreach (Item inventoryItem in choosedItems)
             {
-                if(inventoryItem.GetItemType() == item.GetItemType())
+                if(!inventoryItem.Amount.IsFull())
                 {
-                    inventoryItem.AddAmount(item.GetAmount());
-                    itemAlreadyInInventory = true;
+                    int diffAmount = inventoryItem.Amount.Increase(item.Amount.GetAmount());
+                    if(diffAmount > 0)
+                    {
+                        itemAlreadyInInventory = true;
+                    }
+                    
                 }
             }
             if(!itemAlreadyInInventory)
@@ -44,20 +54,20 @@ public class Inventory: MonoBehaviour
         OnItemListChanged.Invoke(this, EventArgs.Empty);
     }
 
-    public void RemoveItem(InventoryItem item)
+    public void RemoveItem(Item item)
     {
-        if (item.isStackable())
+        if (item.IsStackable())
         {
-            InventoryItem itemInInventory = null;
-            foreach (InventoryItem inventoryItem in _itemList)
+            Item itemInInventory = null;
+            foreach (Item inventoryItem in _itemList)
             {
-                if (inventoryItem.GetItemType() == item.GetItemType())
+                if (inventoryItem.GetSprite() == item.GetSprite())
                 {
-                    inventoryItem.DecreaseAmount(item.GetAmount());
+                    inventoryItem.Amount.Increase(item.Amount.GetAmount());
                     itemInInventory = inventoryItem;
                 }
             }
-            if (itemInInventory != null && itemInInventory.GetAmount() <= 0)
+            if (itemInInventory != null && itemInInventory.Amount.GetAmount() <= 0)
             {
                 _itemList.Remove(item);
             }
@@ -69,7 +79,7 @@ public class Inventory: MonoBehaviour
         OnItemListChanged.Invoke(this, EventArgs.Empty);
     }
 
-    public List<InventoryItem> GetItemList()
+    public List<Item> GetItemList()
     {
         return _itemList;
     }

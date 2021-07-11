@@ -7726,6 +7726,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oreSprite: {fileID: 0}
+  metallSprite: {fileID: 0}
+  pistolSprite: {fileID: 0}
 --- !u!114 &795981868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7738,7 +7740,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaa3ba3556b5d334bae65431ef207b72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _slotsInLenght: 3
+  _slotsInLenght: 5
 --- !u!1 &800987875 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1228115380507712, guid: 5007776beb043ae4d8eebe083ac1822f,
