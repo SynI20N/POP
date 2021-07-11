@@ -1,7 +1,9 @@
 using DG.Tweening;
+using System;
 using TMPro;
 using UnityEngine;
 using static UnityEngine.Vector3;
+using System.Collections.Generic;
 
 public class CellPanel : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class CellPanel : MonoBehaviour
 
     private const float _tweenTime = 0.5f;
 
+    //private Stack<TextMeshProUGUI> _contents;
     private GameObject _panel;
     private CanvasGroup _canvasGroup;
 
@@ -16,6 +19,7 @@ public class CellPanel : MonoBehaviour
     {
         _panel = gameObject;
         _canvasGroup = _panel.GetComponent<CanvasGroup>();
+        //_contents = new Stack<TextMeshProUGUI>(10);
 
         Cell.onPointerClick += Open;
     }
@@ -32,9 +36,18 @@ public class CellPanel : MonoBehaviour
 
     public void Open(Cell cell)
     {
-        _textDescription.text = cell.gameObject.name;
-
         Animate(1f);
+/*        List<GameObject> contents = cell.GetObjects();
+
+        foreach(var c in contents)
+        {
+            TextMeshProUGUI text = new TextMeshProUGUI();
+            text.text = c.name;
+            if (!_contents.Contains(text))
+            {
+                _contents.Push(text);
+            }
+        }*/
     }
 
     private void Animate(float alpha)

@@ -1,47 +1,54 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Cell : MonoBehaviour, IPointerClickHandler, ILightable
+public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
 {
-    [SerializeField] private Color _glowColor;
-
-    private GameObject _cell;
-    private Material _cellMaterial;
-
-    private Color _defaultColor;
+    private List<GameObject> _objects = new List<GameObject>();
 
     public static event Action<Cell> onPointerClick;
+
+    private Transform _thisTransform;
+    private bool _spawnAbility = true;
+
     private void Start()
     {
-        _cell = gameObject;
-        _cellMaterial = _cell.GetComponent<MeshRenderer>().material;
-        _cellMaterial.EnableKeyword("_EMISSION");
-        _defaultColor = GetColor();
-    }
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        onPointerClick.Invoke(this);
-        Light();
+        _thisTransform = gameObject.transform;
     }
 
-    public void Light()
+    private void OnTriggerEnter(Collider other)
     {
-        SetColor(_glowColor);
+        AddObject(other.gameObject);
     }
 
-    public void Unlight()
+    public void AddObject(GameObject gameObject)
     {
-        SetColor(_defaultColor);
+        _objects.Add(gameObject);
     }
 
-    private Color GetColor()
+    public bool CheckSpawn()
     {
-        return _cellMaterial.GetColor("_EmissionColor");
+        return _spawnAbility;
     }
 
-    private void SetColor(Color glowColor)
+    public void SetAbility(bool ability)
     {
-        _cellMaterial.SetColor("_EmissionColor", glowColor);
+        _spawnAbility = ability;
+    }
+
+    public void OnPointerClick(PointerEventData pointerEvent)
+    {
+        onPointerClick(this);
+    }
+
+    public Transform GetTransform()
+    {
+        return _thisTransform;
+    }
+
+    public List<GameObject> GetObjects()
+    {
+        return _objects;
     }
 }

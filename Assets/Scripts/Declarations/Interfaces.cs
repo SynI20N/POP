@@ -1,5 +1,16 @@
-public interface ILightable
+using UnityEngine;
+
+public interface ISpawnable
 {
-    public void Light();
-    public void Unlight();
+    public bool CheckSpawn();
+    public void SetAbility(bool ability);
+}
+public interface ICellObjects
+{
+    public void AddObject(GameObject gameObject);
+}
+
+public interface ISpawner
+{
+    public void Spawn(Cell cell);
 }
