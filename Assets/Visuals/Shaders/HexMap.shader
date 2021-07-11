@@ -65,7 +65,7 @@ Shader "Custom/HexMap"
         {
             if (abs(IN.worldPos.x - (Pos.x - _xOffset)) < _r 
              && (IN.worldPos.z + _yOffset) < lineFunc(IN, Pos)
-             && (IN.worldPos.z + _yOffset) > lineFunc(IN, Pos) - 2 * _R + abs(Pos.x - IN.worldPos.x) * 1.2
+             && (IN.worldPos.z + _yOffset) > lineFunc(IN, Pos) - 2 * _R + abs(Pos.x - IN.worldPos.x) * 1.17
                 )
             {
                 return true;
@@ -78,7 +78,7 @@ Shader "Custom/HexMap"
             mask = 0;
             if (isInsideHex(IN, _Pos))
             {
-                mask = 2;
+                mask = 1;
             }
             texOffset.xy = -ParallaxOffset(tex2D(_MainTex, IN.uv_MainTex).r, _HeightPower, IN.viewDir).xy;
             fixed4 c = tex2D(_MainTex, IN.uv_MainTex + texOffset) * _Color;

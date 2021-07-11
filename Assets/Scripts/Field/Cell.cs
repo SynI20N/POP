@@ -17,6 +17,11 @@ public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
         _thisTransform = gameObject.transform;
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        AddObject(other.gameObject);
+    }
+
     public void AddObject(GameObject gameObject)
     {
         _objects.Add(gameObject);
@@ -40,5 +45,10 @@ public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
     public Transform GetTransform()
     {
         return _thisTransform;
+    }
+
+    public List<GameObject> GetObjects()
+    {
+        return _objects;
     }
 }
