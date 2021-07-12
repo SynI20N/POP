@@ -3,7 +3,17 @@ guid: d6f044da50c59ba469979ec5d1a5997e
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Color_A04.007
+    second: {fileID: 2100000, guid: 93837e3d960a9b94596057a666775fc9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Color_C08.010
+    second: {fileID: 2100000, guid: 2a45f1479b67cc747acd37001f176770, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -29,7 +39,8 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    extraUserProperties: []
+    extraUserProperties:
+    - '#BAKERY{"meshName":["Mesh46"],"padding":[47],"unwrapper":[0]}'
     clipAnimations: []
     isReadable: 0
   meshes:

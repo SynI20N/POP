@@ -85,5 +85,5 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 0, b: 0.020844936, a: 0.14901961}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Pos: {r: 139.47453, g: 144.375, b: 0, a: 0}
+    - _Pos: {r: 147.05226, g: 157.5, b: 0, a: 0}
   m_BuildTextureStacks: []

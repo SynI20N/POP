@@ -1,9 +1,7 @@
 using DG.Tweening;
-using System;
 using TMPro;
 using UnityEngine;
 using static UnityEngine.Vector3;
-using System.Collections.Generic;
 
 public class CellPanel : MonoBehaviour
 {
@@ -37,23 +35,23 @@ public class CellPanel : MonoBehaviour
     public void Open(Cell cell)
     {
         Animate(1f);
-/*        List<GameObject> contents = cell.GetObjects();
+        /*        List<GameObject> contents = cell.GetObjects();
 
-        foreach(var c in contents)
-        {
-            TextMeshProUGUI text = new TextMeshProUGUI();
-            text.text = c.name;
-            if (!_contents.Contains(text))
-            {
-                _contents.Push(text);
-            }
-        }*/
+                foreach(var c in contents)
+                {
+                    TextMeshProUGUI text = new TextMeshProUGUI();
+                    text.text = c.name;
+                    if (!_contents.Contains(text))
+                    {
+                        _contents.Push(text);
+                    }
+                }*/
     }
 
     private void Animate(float alpha)
     {
         _canvasGroup.alpha = alpha;
-        _panel.transform.localScale = zero;
+        _panel.transform.localScale = one * 0.2f;
         _panel.transform.DOKill();
         _panel.transform.DOScale(alpha, _tweenTime);
     }

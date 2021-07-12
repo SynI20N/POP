@@ -1,75 +1,67 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class Inventory: MonoBehaviour
+public class Inventory : MonoBehaviour
 {
     [SerializeField] private UI_Inventory _uiInventory;
+    [SerializeField] private int _maxSlots;
 
-    private List<InventoryItem> _itemList;
+    private List<Item> _itemList;
 
-    public event EventHandler OnItemListChanged;
+    public event Action OnItemListChanged;
 
     private void Awake()
     {
         _uiInventory.SetInventory(this);
     }
-    public Inventory()
+    private void Start()
     {
-        _itemList = new List<InventoryItem>();
+        _itemList = new List<Item>();
     }
 
-    public void AddItem(InventoryItem item) 
+    private void PolishInventory(Item item)
     {
-        if(item.isStackable())
+        var chosenItems =
+          from invItem in _itemList
+          where invItem.GetSprite() == item.GetSprite() && !invItem.Amount.IsFull()
+          select invItem;
+        if (chosenItems.Count() == 2)
         {
-            bool itemAlreadyInInventory = false;
-            foreach (InventoryItem inventoryItem in _itemList)
-            {
-                if(inventoryItem.GetItemType() == item.GetItemType())
-                {
-                    inventoryItem.AddAmount(item.GetAmount());
-                    itemAlreadyInInventory = true;
-                }
-            }
-            if(!itemAlreadyInInventory)
-            {
-                _itemList.Add(item);
-            }
+            int diffAmount = chosenItems.First().Amount.Increase(chosenItems.Last().Amount.GetAmount());
         }
-        else
+        else if (chosenItems.Count() == 1)
+        {
+
+        }
+    }
+
+    private bool CanRemove(Item item)
+    {
+        return true;
+    }
+
+    public void AddItem(Item item)
+    {
+        if (item == null)
+        {
+            return;
+        }
+
+        if (_itemList.Count() < _maxSlots)
         {
             _itemList.Add(item);
+            item.Destroy();
         }
-        OnItemListChanged.Invoke(this, EventArgs.Empty);
+
+        PolishInventory(item);
+
+        OnItemListChanged.Invoke();
     }
 
-    public void RemoveItem(InventoryItem item)
-    {
-        if (item.isStackable())
-        {
-            InventoryItem itemInInventory = null;
-            foreach (InventoryItem inventoryItem in _itemList)
-            {
-                if (inventoryItem.GetItemType() == item.GetItemType())
-                {
-                    inventoryItem.DecreaseAmount(item.GetAmount());
-                    itemInInventory = inventoryItem;
-                }
-            }
-            if (itemInInventory != null && itemInInventory.GetAmount() <= 0)
-            {
-                _itemList.Remove(item);
-            }
-        }
-        else
-        {
-            _itemList.Remove(item);
-        }
-        OnItemListChanged.Invoke(this, EventArgs.Empty);
-    }
 
-    public List<InventoryItem> GetItemList()
+    public List<Item> GetItemList()
     {
         return _itemList;
     }
