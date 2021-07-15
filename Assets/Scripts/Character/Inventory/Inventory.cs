@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    [SerializeField] private UI_Inventory _uiInventory;
+    [SerializeField] private InventoryPanel _inventoryPanel;
     [SerializeField] private int _maxSlots;
 
     private List<Item> _itemList;
@@ -14,7 +14,7 @@ public class Inventory : MonoBehaviour
 
     private void Awake()
     {
-        _uiInventory.SetInventory(this);
+        _inventoryPanel.SetInventory(this);
     }
     private void Start()
     {
@@ -25,7 +25,7 @@ public class Inventory : MonoBehaviour
     {
         var chosenItems =
           from invItem in _itemList
-          where invItem.GetSprite() == item.GetSprite() && !invItem.Amount.IsFull()
+          where invItem.GetImage() == item.GetImage() && !invItem.Amount.IsFull()
           select invItem;
         if (chosenItems.Count() == 2)
         {

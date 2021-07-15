@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class ResourceSpawner : MonoBehaviour
 {
-    private Object _resourcePrefab;
+    private GameObject _resourcePrefab;
 
-    private int _resourceBoxCounter = 0;
+    private const uint _initHeight = 10;
+    private const float _initSize = 0.35f;
     private void Start()
     {
         Timer.spawnResource += CreateResource;
@@ -13,14 +14,11 @@ public class ResourceSpawner : MonoBehaviour
 
     private void CreateResource()
     {
-        GameObject resource = Instantiate(_resourcePrefab) as GameObject;
-        resource.transform.SetParent(gameObject.transform, false);
-        resource.transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
+        GameObject resource = Instantiate(_resourcePrefab);
 
+        resource.transform.localScale = new Vector3(_initSize, _initSize, _initSize);
         resource.transform.position = new Vector3(resource.transform.position.x,
-                                                  _resourceBoxCounter * 1.2f,
+                                                  _initHeight,
                                                   resource.transform.position.z);
-
-        _resourceBoxCounter += 1;
     }
 }

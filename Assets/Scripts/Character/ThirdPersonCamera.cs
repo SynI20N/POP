@@ -10,11 +10,12 @@ public class ThirdPersonCamera : MonoBehaviour
     private void Start()
     {
         if (_camera == null)
+        {
             return;
+        }
 
-        _linkVector = _camera.transform.position;
         _objectTransform = GetComponent<Transform>();
-        _linkVector -= _objectTransform.position;
+        _linkVector = _camera.transform.position - _objectTransform.position;
     }
 
     private void Update()

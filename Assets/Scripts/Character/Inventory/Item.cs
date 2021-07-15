@@ -1,8 +1,9 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Item : MonoBehaviour
 {
-    [SerializeField] private Sprite _sprite;
+    [SerializeField] private Image _image;
 
     [SerializeField] private int _maxAmount;
 
@@ -13,9 +14,9 @@ public class Item : MonoBehaviour
         Amount.SetMax(_maxAmount);
     }
 
-    public Sprite GetSprite()
+    public Image GetImage()
     {
-        return _sprite;
+        return _image;
     }
 
     public void Destroy()

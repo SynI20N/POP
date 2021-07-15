@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
@@ -8,6 +9,7 @@ public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
     private List<GameObject> _objects = new List<GameObject>();
 
     public static event Action<Cell> onPointerClick;
+    [SerializeField] private UnityEvent onStart;
 
     private Transform _thisTransform;
     private bool _spawnAbility = true;
@@ -15,11 +17,8 @@ public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
     private void Start()
     {
         _thisTransform = gameObject.transform;
-    }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        AddObject(other.gameObject);
+        onStart.Invoke();
     }
 
     public void AddObject(GameObject gameObject)

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7468708886472120750}
   - component: {fileID: 2915637879258470760}
   - component: {fileID: 6217754163203897431}
-  - component: {fileID: 7680325235907026064}
   m_Layer: 6
   m_Name: Hex
   m_TagString: Cell
@@ -45,6 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebf8fc91271af624eaa18a10a39004d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onStart:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!64 &6217754163203897431
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -59,19 +61,3 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: -1
   m_Mesh: {fileID: -462981019419857548, guid: 348a458fda15205468d4f0244fc82a3d, type: 3}
---- !u!54 &7680325235907026064
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7849210675867484948}
-  serializedVersion: 2
-  m_Mass: 1000
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0

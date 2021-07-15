@@ -1,22 +1,18 @@
+using System;
 using UnityEngine;
+using static UnityEngine.Random;
 
+[ExecuteAlways]
 public class Field : MonoBehaviour
 {
-    [SerializeField] private int _height;
-    [SerializeField] private int _length;
-
+    [SerializeField] private uint _height;
+    [SerializeField] private uint _length;
     [SerializeField] private Cell _cellPrefab;
 
+    private const int _default = -100;
+
     private Cell[,] _field;
-    private const int _inTheMiddleOfNowhere = -100;
-
     private Material _fieldMaterial;
-
-    private void Awake()
-    {
-        _field = new Cell[_length, _height];
-        CreateField();
-    }
 
     private void Start()
     {
@@ -33,20 +29,31 @@ public class Field : MonoBehaviour
         Timer.spawnSpawner -= SpawnSpawner;
     }
 
-    private void CreateField()
+    public void Rebuild()
     {
-        for (int x = 0; x < _length; x++)
+        DeleteCells();
+        _field = new Cell[_length, _height];
+        for (int x = 0; x < _field.GetLength(0); x++)
         {
-            for (int z = 0; z < _height; z++)
+            for (int z = 0; z < _field.GetLength(1); z++)
             {
                 _field[x, z] = CreateCell(x, z);
             }
         }
     }
 
+    private void DeleteCells()
+    {
+        Cell[] field = FindObjectsOfType<Cell>();
+        for (int x = 0; x < field.Length; x++)
+        {
+            DestroyImmediate(field[x].gameObject);
+        }
+    }
+
     private Cell CreateCell(int x, int z)
     {
-        Vector3 position = FromCellCoordinates(x, z);
+        Vector3 position = PosFromCoordinates(x, z);
 
         Cell cell = Instantiate(_cellPrefab);
         cell.transform.SetParent(transform, false);
@@ -54,7 +61,7 @@ public class Field : MonoBehaviour
         return cell;
     }
 
-    private Vector3 FromCellCoordinates(int x, int z)
+    private Vector3 PosFromCoordinates(int x, int z)
     {
         Vector3 position = new Vector3();
 
@@ -70,10 +77,10 @@ public class Field : MonoBehaviour
 
     private Cell ChooseRandomCell()
     {
-        int x = Random.Range(0, _length);
-        int z = Random.Range(0, _height);
+        int x = Range(0, _field.GetLength(0));
+        int z = Range(0, _field.GetLength(1));
 
-        if (_field[x, z].CheckSpawn())
+        if (_field[x, z] != null && _field[x, z].CheckSpawn())
         {
             return _field[x, z];
         }
@@ -106,7 +113,7 @@ public class Field : MonoBehaviour
 
     public void Unlight()
     {
-        Vector4 position = new Vector4(_inTheMiddleOfNowhere, _inTheMiddleOfNowhere, 0, 0);
+        Vector4 position = new Vector4(_default, _default, 0, 0);
         _fieldMaterial.SetVector("_Pos", position);
     }
 }

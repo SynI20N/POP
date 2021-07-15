@@ -28,5 +28,5 @@
         }
         ENDCG
     }
-    Fallback off
+    Fallback "Diffuse"
  }
