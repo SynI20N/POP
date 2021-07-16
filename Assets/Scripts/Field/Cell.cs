@@ -48,6 +48,7 @@ public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
 
     public List<GameObject> GetObjects()
     {
-        return _objects;
+        List<GameObject> result = new List<GameObject>(_objects);
+        return result;
     }
 }

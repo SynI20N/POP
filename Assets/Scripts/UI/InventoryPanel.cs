@@ -6,14 +6,14 @@ public class InventoryPanel : MonoBehaviour
     [SerializeField] private int _slotsInLenght;
 
     private Inventory _inventory;
-    private Transform _itemSlotContanier;
+    private Transform _itemSlotContainer;
     private Transform _itemSlotTemplate;
     private float _itemSlotSize;
 
     private void Awake()
     {
-        _itemSlotContanier = transform.Find("ItemSlotContanier");
-        _itemSlotTemplate = _itemSlotContanier.Find("ItemSlotTemplate");
+        _itemSlotContainer = transform.Find("ItemSlotContanier");
+        _itemSlotTemplate = _itemSlotContainer.Find("ItemSlotTemplate");
         SetSlotSize();
     }
 
@@ -55,7 +55,7 @@ public class InventoryPanel : MonoBehaviour
 
     private RectTransform CreatRectTransform()
     {
-        return Instantiate(_itemSlotTemplate, _itemSlotContanier).GetComponent<RectTransform>();
+        return Instantiate(_itemSlotTemplate, _itemSlotContainer).GetComponent<RectTransform>();
     }
 
     private void SetPosition(RectTransform itemSlotRectTransform, int x, int y)
@@ -87,6 +87,6 @@ public class InventoryPanel : MonoBehaviour
 
     private void SetSlotSize()
     {
-        //atomaticly check and set SlotSize
+        //automatically check and set SlotSize
     }
 }

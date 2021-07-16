@@ -22,7 +22,7 @@ public class CellPanel : MonoBehaviour
         _panel = gameObject;
         _canvasGroup = _panel.GetComponent<CanvasGroup>();
         _nextIconPos = zero;
-        _icons = new Stack<GameObject>(20);
+        _icons = new Stack<GameObject>();
 
         Cell.onPointerClick += Open;
     }
@@ -39,9 +39,9 @@ public class CellPanel : MonoBehaviour
 
     public void Open(Cell cell)
     {
-        Animate(1f);
         ClearStack();
         DisplayItems(cell);
+        Animate(1f);
     }
 
     private void DisplayItems(Cell cell)
@@ -55,7 +55,7 @@ public class CellPanel : MonoBehaviour
                 GameObject image = Instantiate(item.GetImage().gameObject, _firstItemPoint);
                 image.GetComponent<RectTransform>().localPosition = _nextIconPos;
                 _icons.Push(image);
-                _nextIconPos += right;
+                _nextIconPos += right * 50;
             }
         }
     }
@@ -66,7 +66,7 @@ public class CellPanel : MonoBehaviour
         {
             Destroy(_icons.Pop());
         }
-        _icons.Clear();
+        _nextIconPos = zero;
     }
 
     private void Animate(float alpha)
