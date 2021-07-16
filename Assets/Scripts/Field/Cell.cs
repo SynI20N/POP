@@ -6,11 +6,11 @@ using UnityEngine.EventSystems;
 
 public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
 {
-    private List<GameObject> _objects = new List<GameObject>();
-
-    public static event Action<Cell> onPointerClick;
     [SerializeField] private UnityEvent onStart;
 
+    public static event Action<Cell> onPointerClick;
+
+    private List<GameObject> _objects = new List<GameObject>();
     private Transform _thisTransform;
     private bool _spawnAbility = true;
 

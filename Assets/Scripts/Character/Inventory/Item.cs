@@ -11,6 +11,7 @@ public class Item : MonoBehaviour
 
     private void Start()
     {
+        Amount = new Amount(1);
         Amount.SetMax(_maxAmount);
     }
 

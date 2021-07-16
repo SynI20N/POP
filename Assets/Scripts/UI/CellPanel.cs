@@ -66,6 +66,7 @@ public class CellPanel : MonoBehaviour
         {
             Destroy(_icons.Pop());
         }
+        _icons.Clear();
     }
 
     private void Animate(float alpha)

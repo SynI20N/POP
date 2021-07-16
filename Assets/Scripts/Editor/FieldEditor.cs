@@ -1,14 +1,14 @@
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(Field))]
+[CustomEditor(typeof(FieldBuilder))]
 public class FieldEditor : Editor
 {
-    private Field _instance;
+    private FieldBuilder _instance;
 
     private void OnEnable()
     {
-        _instance = (Field)target;
+        _instance = (FieldBuilder)target;
     }
 
     public override void OnInspectorGUI()

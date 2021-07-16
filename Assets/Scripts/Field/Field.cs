@@ -1,78 +1,48 @@
-using System;
 using UnityEngine;
 using static UnityEngine.Random;
 
-[ExecuteAlways]
+[RequireComponent(typeof(FieldBuilder))]
 public class Field : MonoBehaviour
 {
-    [SerializeField] private uint _height;
-    [SerializeField] private uint _length;
-    [SerializeField] private Cell _cellPrefab;
-
     private const int _default = -100;
 
     private Cell[,] _field;
     private Material _fieldMaterial;
+    private FieldBuilder _fieldBuilder;
 
     private void Start()
     {
         _fieldMaterial = gameObject.GetComponent<Terrain>().materialTemplate;
+        _fieldBuilder = GetComponent<FieldBuilder>();
         _fieldMaterial.EnableKeyword("POS");
 
         Cell.onPointerClick += Light;
-        Timer.spawnSpawner += SpawnSpawner;
+        Timer.spawnSpawner += AddResourceSpawner;
+
+        FindField();
     }
 
     private void OnDestroy()
     {
         Cell.onPointerClick -= Light;
-        Timer.spawnSpawner -= SpawnSpawner;
+        Timer.spawnSpawner -= AddResourceSpawner;
     }
 
-    public void Rebuild()
+    private void FindField()
     {
-        DeleteCells();
-        _field = new Cell[_length, _height];
-        for (int x = 0; x < _field.GetLength(0); x++)
+        uint length = _fieldBuilder.GetLength();
+        uint height = _fieldBuilder.GetHeight();
+        _field = new Cell[length, height];
+        Cell[] field = FindObjectsOfType<Cell>();
+        int i = 0;
+        for (int x = 0; x < length; x++)
         {
-            for (int z = 0; z < _field.GetLength(1); z++)
+            for (int y = 0; y < height; y++)
             {
-                _field[x, z] = CreateCell(x, z);
+                _field[x, y] = field[i];
+                i++;
             }
         }
-    }
-
-    private void DeleteCells()
-    {
-        Cell[] field = FindObjectsOfType<Cell>();
-        for (int x = 0; x < field.Length; x++)
-        {
-            DestroyImmediate(field[x].gameObject);
-        }
-    }
-
-    private Cell CreateCell(int x, int z)
-    {
-        Vector3 position = PosFromCoordinates(x, z);
-
-        Cell cell = Instantiate(_cellPrefab);
-        cell.transform.SetParent(transform, false);
-        cell.transform.localPosition = position;
-        return cell;
-    }
-
-    private Vector3 PosFromCoordinates(int x, int z)
-    {
-        Vector3 position = new Vector3();
-
-        position.x = x * (CellMetrics.innerRadius * 2f);
-        position.x = (x + z * 0.5f) * (CellMetrics.innerRadius * 2f);
-        position.x = (x + z * 0.5f - z / 2) * (CellMetrics.innerRadius * 2f);
-        position.x += 1.56f;
-        position.y = 0f;
-        position.z = z * (CellMetrics.outerRadius * 1.5f);
-
-        return position;
     }
 
     private Cell ChooseRandomCell()
@@ -87,20 +57,12 @@ public class Field : MonoBehaviour
         return null;
     }
 
-    private void AddResourceSpawner(Cell cell)
+    private void AddResourceSpawner()
     {
+        Cell cell = ChooseRandomCell();
         if (cell.CheckSpawn())
         {
             cell.gameObject.AddComponent<ResourceSpawner>();
-        }
-    }
-
-    private void SpawnSpawner()
-    {
-        Cell cell = ChooseRandomCell();
-        if (cell != null)
-        {
-            AddResourceSpawner(cell);
         }
     }
 
