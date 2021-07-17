@@ -34,7 +34,7 @@ public class FieldBuilder : MonoBehaviour
 
         Cell cell = Instantiate(_cellPrefab);
         cell.transform.SetParent(transform, false);
-        cell.transform.localPosition = position;
+        cell.transform.position = position;
         return cell;
     }
 

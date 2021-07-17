@@ -86,7 +86,7 @@ Shader "Custom/HexMap"
 
             o.Albedo = c.rgb;
             o.Alpha = c.a;
-            o.Emission = pow(e.rgb , mask);
+            o.Emission = pow(e.rgb , mask) * mask;
             o.Normal = UnpackNormal(tex2D(_NormalMap, IN.uv_NormalMap + texOffset));
         }
 

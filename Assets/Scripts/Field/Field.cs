@@ -12,7 +12,7 @@ public class Field : MonoBehaviour
 
     private void Start()
     {
-        _fieldMaterial = gameObject.GetComponent<Terrain>().materialTemplate;
+        _fieldMaterial = gameObject.GetComponent<MeshRenderer>().material;
         _fieldBuilder = GetComponent<FieldBuilder>();
         _fieldMaterial.EnableKeyword("POS");
 
