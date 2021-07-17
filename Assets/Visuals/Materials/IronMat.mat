@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FieldMat
-  m_Shader: {fileID: 4800000, guid: b8a96a8b04de0ae4bbb6fb0422b10592, type: 3}
-  m_ShaderKeywords: POS
+  m_Name: IronMat
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -36,20 +36,16 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: 639d51f598cd49a4f86effcda76ae8c3, type: 3}
-        m_Scale: {x: 49.485, y: 57.15}
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: a41b1c7b95afd0d429d0cc9b4a93fd63, type: 3}
-        m_Scale: {x: 49.485, y: 57.15}
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: 3b61d8a69be0f3d43bac8c38db07d13a, type: 3}
-        m_Scale: {x: 49.485, y: 57.15}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
@@ -64,26 +60,19 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _Extrusion: 0.01
     - _GlossMapScale: 1
-    - _Glossiness: 0.5
+    - _Glossiness: 0.14
     - _GlossyReflections: 1
-    - _HeightPower: 0.02
-    - _Metallic: 0
+    - _Metallic: 1
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _R: 1.79
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
-    - _r: 1.52
-    - _xOffset: 0.05
-    - _yOffset: -0.068
     m_Colors:
-    - _Color: {r: 1, g: 0, b: 0.020844936, a: 0.14901961}
+    - _Color: {r: 0.7735849, g: 0.7735849, b: 0.7735849, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Pos: {r: 147.05226, g: 147, b: 0, a: 0}
   m_BuildTextureStacks: []
