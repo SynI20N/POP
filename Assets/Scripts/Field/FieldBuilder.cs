@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class FieldBuilder : MonoBehaviour
+public class FieldBuilder : EnvironmentSpawner
 {
     [SerializeField] private uint _height;
     [SerializeField] private uint _length;
@@ -9,22 +9,13 @@ public class FieldBuilder : MonoBehaviour
 
     public void Rebuild()
     {
-        DeleteCells();
+        SpawnHelper.ClearChildrenIn(transform);
         for (int x = 0; x < _length; x++)
         {
             for (int z = 0; z < _height; z++)
             {
                 CreateCell(x, z);
             }
-        }
-    }
-
-    private void DeleteCells()
-    {
-        Cell[] field = FindObjectsOfType<Cell>();
-        for (int x = 0; x < field.Length; x++)
-        {
-            DestroyImmediate(field[x].gameObject);
         }
     }
 
@@ -35,6 +26,7 @@ public class FieldBuilder : MonoBehaviour
         Cell cell = Instantiate(_cellPrefab);
         cell.transform.SetParent(transform, false);
         cell.transform.position = position;
+        SpawnEnvironment(cell);
         return cell;
     }
 
