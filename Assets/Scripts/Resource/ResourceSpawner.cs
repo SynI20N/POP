@@ -1,6 +1,6 @@
+using System.Collections;
 using UnityEngine;
 using static UnityEngine.Random;
-using System.Collections;
 
 [RequireComponent(typeof(Cell))]
 public class ResourceSpawner : MonoBehaviour
@@ -11,7 +11,7 @@ public class ResourceSpawner : MonoBehaviour
     private const uint _initHeight = 5;
     private const uint _maxResourceCount = 10;
     private const float _initRadius = 0.75f;
-    
+
     private uint _resourceCount;
     private void Start()
     {

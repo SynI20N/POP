@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: -3454696517323585326}
   - component: {fileID: 3260842304628613653}
   - component: {fileID: -2477335263609988283}
-  - component: {fileID: 205506183056764557}
   m_Layer: 0
   m_Name: Resource
   m_TagString: Untagged
@@ -111,7 +110,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 134ee876cdc3acd4780835914d79af62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _resourceAmount: 50
+  _image: {fileID: 3277588636684766674, guid: d6d202a0b1714e84e81144f6e10ff4a1, type: 3}
+  _maxAmount: 50
 --- !u!54 &-2477335263609988283
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -128,17 +128,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 10
   m_CollisionDetection: 1
---- !u!114 &205506183056764557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 961267799233126583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8faddf74e4018547bde0961238837ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _image: {fileID: 3277588636684766674, guid: d6d202a0b1714e84e81144f6e10ff4a1, type: 3}
-  _maxAmount: 10

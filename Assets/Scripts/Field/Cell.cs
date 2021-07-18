@@ -10,7 +10,7 @@ public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
 
     public static event Action<Cell> onPointerClick;
 
-    private List<GameObject> _objects = new List<GameObject>();
+    private List<Item> _objects = new List<Item>();
     private Transform _thisTransform;
     private bool _spawnAbility = true;
 
@@ -23,7 +23,11 @@ public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
 
     public void AddObject(GameObject gameObject)
     {
-        _objects.Add(gameObject);
+        Item item;
+        if (gameObject.TryGetComponent(out item))
+        {
+            _objects.Add(item);
+        }
     }
 
     public bool CheckSpawn()
@@ -41,14 +45,14 @@ public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
         onPointerClick(this);
     }
 
-    public Transform GetTransform()
+    public Vector3 GetPosition()
     {
-        return _thisTransform;
+        return _thisTransform.position;
     }
 
-    public List<GameObject> GetObjects()
+    public List<Item> GetObjects()
     {
-        List<GameObject> result = new List<GameObject>(_objects);
+        List<Item> result = new List<Item>(_objects);
         return result;
     }
 }
