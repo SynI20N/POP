@@ -9,22 +9,13 @@ public class FieldBuilder : EnvironmentSpawner
 
     public void Rebuild()
     {
-        DeleteCells();
+        SpawnHelper.ClearChildrenIn(transform);
         for (int x = 0; x < _length; x++)
         {
             for (int z = 0; z < _height; z++)
             {
                 CreateCell(x, z);
             }
-        }
-    }
-
-    private void DeleteCells()
-    {
-        Cell[] field = FindObjectsOfType<Cell>();
-        for (int x = 0; x < field.Length; x++)
-        {
-            DestroyImmediate(field[x].gameObject);
         }
     }
 

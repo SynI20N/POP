@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class Inventory : MonoBehaviour, IPointerClickHandler
@@ -28,14 +27,14 @@ public class Inventory : MonoBehaviour, IPointerClickHandler
         {
             int diffAmount = chosenItems.First().Amount.Increase(chosenItems.Last().Amount.GetAmount());
             chosenItems.Last().Amount.Decrease(chosenItems.Last().Amount.GetAmount());
-            if(diffAmount > 0)
+            if (diffAmount > 0)
             {
                 chosenItems.Last().Amount.Increase(diffAmount);
             }
             else
             {
                 _itemList.Remove(chosenItems.Last());
-            }          
+            }
         }
         else if (chosenItems.Count() == 1)
         {
@@ -53,7 +52,7 @@ public class Inventory : MonoBehaviour, IPointerClickHandler
         if (_itemList.Count() < _maxSlots)
         {
             _itemList.Add(item);
-            item.Destroy();
+            Destroy(item);
         }
 
         PolishInventory(item);
@@ -61,7 +60,7 @@ public class Inventory : MonoBehaviour, IPointerClickHandler
 
     public void RemoveItem(Item item)
     {
-        if(item == null)
+        if (item == null)
         {
             return;
         }
@@ -71,10 +70,10 @@ public class Inventory : MonoBehaviour, IPointerClickHandler
           where invItem.GetImage() == item.GetImage()
           select invItem;
 
-        if(chosenItems.Count() >= 2)
+        if (chosenItems.Count() >= 2)
         {
             int diffAmount = chosenItems.Last().Amount.Decrease(item.Amount.GetAmount());
-            if(diffAmount > 0)
+            if (diffAmount > 0)
             {
                 _itemList.Remove(chosenItems.Last());
                 chosenItems.ToList().Remove(chosenItems.Last());
@@ -82,9 +81,9 @@ public class Inventory : MonoBehaviour, IPointerClickHandler
                 chosenItems.Last().Amount.Decrease(diffAmount);
             }
         }
-        else if(chosenItems.Count() == 1)
+        else if (chosenItems.Count() == 1)
         {
-            if(chosenItems.First().Amount.GetAmount() > item.Amount.GetAmount())
+            if (chosenItems.First().Amount.GetAmount() > item.Amount.GetAmount())
             {
                 chosenItems.First().Amount.Decrease(item.Amount.GetAmount());
             }
@@ -102,6 +101,6 @@ public class Inventory : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData pointerEvent)
     {
-        onCharacterClick.Invoke(this);       
+        onCharacterClick.Invoke(this);
     }
 }

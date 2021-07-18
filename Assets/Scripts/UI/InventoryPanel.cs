@@ -1,6 +1,4 @@
 using DG.Tweening;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
 using TMPro;
 using UnityEngine;
 using static UnityEngine.Vector3;
@@ -57,7 +55,7 @@ public class InventoryPanel : MonoBehaviour
     {
         foreach (Transform child in _itemSlotContainer)
         {
-            if(child != _itemSlotTemplate)
+            if (child != _itemSlotTemplate)
             {
                 Destroy(child.gameObject);
             }
@@ -131,7 +129,7 @@ public class InventoryPanel : MonoBehaviour
         slotRT.DOScale(slotRT.localScale * _itemSlotSize / slotRT.rect.width, 0);
 
         _itemSlotOffset *= _itemSlotSize / slotRT.rect.width;
-    } 
+    }
 
     private void Animate(float alpha)
     {

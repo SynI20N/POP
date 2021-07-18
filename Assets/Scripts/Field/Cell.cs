@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
 {
-    [SerializeField] private UnityEvent onStart;
-
     public static event Action<Cell> onPointerClick;
 
     private List<Item> _objects = new List<Item>();
@@ -18,15 +15,18 @@ public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
     {
         _thisTransform = gameObject.transform;
 
-        onStart.Invoke();
+        UpdateContents();
     }
 
-    public void AddObject(GameObject gameObject)
+    public void UpdateContents()
     {
-        Item item;
-        if (gameObject.TryGetComponent(out item))
+        foreach (Transform child in transform)
         {
-            _objects.Add(item);
+            Item item;
+            if (child.gameObject.TryGetComponent(out item))
+            {
+                _objects.Add(item);
+            }
         }
     }
 
