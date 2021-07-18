@@ -28,18 +28,18 @@ public class ResourceSpawner : MonoBehaviour
             StopAllCoroutines();
             Destroy(this);
         }
-        GameObject resource = Instantiate(_resourcePrefab, PosInsideCircle(), Quaternion.identity);
+        GameObject resource = Instantiate(_resourcePrefab, PosInsideCircle(gameObject), Quaternion.identity);
         _thisCell.AddObject(resource);
         StartCoroutine("DelayedRest", resource);
         _resourceCount++;
     }
 
-    private Vector3 PosInsideCircle()
+    public static Vector3 PosInsideCircle(GameObject someObject)
     {
         Vector3 result = new Vector3();
-        result.x = gameObject.transform.position.x;
+        result.x = someObject.transform.position.x;
         result.y = _initHeight;
-        result.z = gameObject.transform.position.z;
+        result.z = someObject.transform.position.z;
 
         Vector2 insideCircle = insideUnitCircle * _initRadius;
         result.x += insideCircle.x;

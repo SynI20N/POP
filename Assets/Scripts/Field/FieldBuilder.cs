@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class FieldBuilder : MonoBehaviour
+public class FieldBuilder : EnvironmentSpawner
 {
     [SerializeField] private uint _height;
     [SerializeField] private uint _length;
@@ -35,6 +35,7 @@ public class FieldBuilder : MonoBehaviour
         Cell cell = Instantiate(_cellPrefab);
         cell.transform.SetParent(transform, false);
         cell.transform.position = position;
+        SpawnEnvironment(cell);
         return cell;
     }
 
