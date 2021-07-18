@@ -36,10 +36,6 @@ public class Inventory : MonoBehaviour, IPointerClickHandler
                 _itemList.Remove(chosenItems.Last());
             }
         }
-        else if (chosenItems.Count() == 1)
-        {
-
-        }
     }
 
     public void AddItem(Item item)
