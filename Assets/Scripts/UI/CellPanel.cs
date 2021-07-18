@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEngine.Vector3;
 
 public class CellPanel : MonoBehaviour
@@ -10,9 +11,9 @@ public class CellPanel : MonoBehaviour
     [SerializeField] private RectTransform _firstItemPoint;
 
     private const float _tweenTime = 0.5f;
-    private const float _startOpenSize = 0.6f;
+    private const float _openSize = 0.6f;
 
-    private Stack<GameObject> _icons;
+    private Stack<Item> _items;
     private Vector3 _nextIconPos;
     private GameObject _panel;
     private CanvasGroup _canvasGroup;
@@ -22,7 +23,7 @@ public class CellPanel : MonoBehaviour
         _panel = gameObject;
         _canvasGroup = _panel.GetComponent<CanvasGroup>();
         _nextIconPos = zero;
-        _icons = new Stack<GameObject>();
+        _items = new Stack<Item>();
 
         Cell.onPointerClick += Open;
     }
@@ -39,40 +40,52 @@ public class CellPanel : MonoBehaviour
 
     public void Open(Cell cell)
     {
-        ClearStack();
+        ResfreshStack();
         DisplayItems(cell);
         Animate(1f);
     }
 
     private void DisplayItems(Cell cell)
     {
-        List<GameObject> contents = cell.GetObjects();
+        List<Item> contents = cell.GetObjects();
         foreach (var c in contents)
         {
-            Item item;
-            if (c.TryGetComponent(out item))
-            {
-                GameObject image = Instantiate(item.GetImage().gameObject, _firstItemPoint);
-                image.GetComponent<RectTransform>().localPosition = _nextIconPos;
-                _icons.Push(image);
-                _nextIconPos += right * 50;
-            }
+            _items.Push(c);
+            GameObject image = Instantiate(c.GetImage().gameObject, _firstItemPoint);
+            image.GetComponent<RectTransform>().localPosition = _nextIconPos;
+
+            CalculateNextPos(c.GetImage());
         }
     }
 
-    private void ClearStack()
+    private void CalculateNextPos(Image image)
     {
-        for (int i = 0; i < _icons.Count; i++)
+        float width = image.sprite.rect.width;
+        float height = image.sprite.rect.height;
+
+        _nextIconPos += right * width;
+        if (_nextIconPos.x > 3 * width)
         {
-            Destroy(_icons.Pop());
+            _nextIconPos += down * height;
+            _nextIconPos.x = 0;
         }
+    }
+
+    private void ResfreshStack()
+    {
         _nextIconPos = zero;
+        Image[] images = _firstItemPoint.GetComponentsInChildren<Image>();
+        for (int i = 0; i < images.Length; i++)
+        {
+            _items.Pop();
+            Destroy(images[i].gameObject);
+        }
     }
 
     private void Animate(float alpha)
     {
         _canvasGroup.alpha = alpha;
-        _panel.transform.localScale = one * _startOpenSize;
+        _panel.transform.localScale = one * _openSize;
         _panel.transform.DOKill();
         _panel.transform.DOScale(alpha, _tweenTime);
     }

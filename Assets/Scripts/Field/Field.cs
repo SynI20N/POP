@@ -68,7 +68,7 @@ public class Field : MonoBehaviour
 
     private void Light(Cell cell)
     {
-        Vector3 position = cell.GetTransform().position;
+        Vector3 position = cell.GetPosition();
         Vector4 shaderPos = new Vector4(position.x, position.z, 0, 0);
         _fieldMaterial.SetVector("_Pos", shaderPos);
     }
