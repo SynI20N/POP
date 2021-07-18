@@ -93,7 +93,7 @@ public class InventoryPanel : MonoBehaviour
 
     private void SetPosition(RectTransform itemSlotRectTransform, int x, int y)
     {
-        itemSlotRectTransform.anchoredPosition = new Vector2(x * _itemSlotSize + _itemSlotOffset, -y * _itemSlotSize + _itemSlotOffset);
+        itemSlotRectTransform.anchoredPosition = new Vector2(x * _itemSlotSize + _itemSlotOffset, -y * _itemSlotSize);
     }
 
     private UnityEngine.UI.Image FindImage(RectTransform itemSlotRectTransform)
