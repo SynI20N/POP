@@ -5,8 +5,6 @@ using static UnityEngine.Vector3;
 
 public class InventoryPanel : MonoBehaviour
 {
-    [SerializeField] private int _slotsInWidth;
-
     private const float _tweenTime = 0.5f;
     private const float _startOpenSize = 0.6f;
 
@@ -16,8 +14,7 @@ public class InventoryPanel : MonoBehaviour
     private Transform _itemSlotContainer;
     private Transform _itemSlotTemplate;
 
-    private float _itemSlotSize;
-    private float _itemSlotOffset = 50f;
+    private const float _itemSlotSize = 100f;
 
     private CanvasGroup _canvasGroup;
 
@@ -28,8 +25,6 @@ public class InventoryPanel : MonoBehaviour
 
         _itemSlotContainer = transform.Find("ItemSlotContanier");
         _itemSlotTemplate = _itemSlotContainer.Find("ItemSlotTemplate");
-
-        SetSlotSize();
 
         Inventory.onCharacterClick += LoadInventory;
     }
@@ -72,7 +67,7 @@ public class InventoryPanel : MonoBehaviour
             itemSlotRectTransform.gameObject.SetActive(true);
 
             SetPosition(itemSlotRectTransform, x, y);
-            if (x > _slotsInWidth)
+            if (x > 10)
             {
                 x = 0;
                 y++;
@@ -93,7 +88,7 @@ public class InventoryPanel : MonoBehaviour
 
     private void SetPosition(RectTransform itemSlotRectTransform, int x, int y)
     {
-        itemSlotRectTransform.anchoredPosition = new Vector2(x * _itemSlotSize + _itemSlotOffset, -y * _itemSlotSize);
+        itemSlotRectTransform.anchoredPosition = new Vector2(x * _itemSlotSize, -y * _itemSlotSize);
     }
 
     private UnityEngine.UI.Image FindImage(RectTransform itemSlotRectTransform)
@@ -116,19 +111,6 @@ public class InventoryPanel : MonoBehaviour
         {
             uiText.SetText("");
         }
-    }
-
-    private void SetSlotSize()
-    {
-        RectTransform panelRT = _panel.GetComponent<RectTransform>();
-        float backgroundWidth = panelRT.rect.width;
-
-        _itemSlotSize = backgroundWidth / (float)_slotsInWidth;
-
-        RectTransform slotRT = _itemSlotTemplate.GetComponent<RectTransform>();
-        slotRT.DOScale(slotRT.localScale * _itemSlotSize / slotRT.rect.width, 0);
-
-        _itemSlotOffset *= _itemSlotSize / slotRT.rect.width;
     }
 
     private void Animate(float alpha)

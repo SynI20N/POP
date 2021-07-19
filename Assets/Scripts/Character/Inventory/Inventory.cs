@@ -21,20 +21,77 @@ public class Inventory : MonoBehaviour, IPointerClickHandler
     {
         var chosenItems =
           from invItem in _itemList
-          where invItem.GetImage() == item.GetImage() && !invItem.Amount.IsFull()
+          where invItem.GetImage() == item.GetImage() && 
+          !invItem.Amount.IsFull()
           select invItem;
         if (chosenItems.Count() == 2)
         {
-            int diffAmount = chosenItems.First().Amount.Increase(chosenItems.Last().Amount.GetAmount());
-            chosenItems.Last().Amount.Decrease(chosenItems.Last().Amount.GetAmount());
-            if (diffAmount > 0)
-            {
-                chosenItems.Last().Amount.Increase(diffAmount);
-            }
-            else
-            {
-                _itemList.Remove(chosenItems.Last());
-            }
+            RecountAddedItems(chosenItems);           
+        }
+    }
+
+    private void RecountAddedItems(IEnumerable<Item> chosenItems)
+    {
+        Item firstItem = chosenItems.First();
+        Item secondItem = chosenItems.Last();
+
+        int seccondAmount = secondItem.Amount.GetAmount();
+
+        int amountRemain = firstItem.Amount.Increase(seccondAmount);
+        secondItem.Amount.Decrease(seccondAmount);
+        if (amountRemain > 0)
+        {
+            secondItem.Amount.Increase(amountRemain);
+        }
+        else
+        {
+            _itemList.Remove(secondItem);
+        }
+    }
+
+    private void RemoveLastItem(IEnumerable<Item> chosenItems, int removeAmount)
+    {
+        Item lastItem = chosenItems.Last();
+        int diffAmount = lastItem.Amount.Decrease(removeAmount);
+        if (diffAmount > 0)
+        {
+            _itemList.Remove(lastItem);
+            chosenItems.ToList().Remove(lastItem);
+
+            lastItem = chosenItems.Last();
+            lastItem.Amount.Decrease(diffAmount);
+        }
+    }
+
+    private void RemoveSingleItem(IEnumerable<Item> chosenItems, int removeAmount)
+    {
+        Item singleItem = chosenItems.First();
+        if (singleItem.Amount.GetAmount() > removeAmount)
+        {
+            singleItem.Amount.Decrease(removeAmount);
+        }
+        else if (singleItem.Amount.GetAmount() == removeAmount)
+        {
+            _itemList.Remove(singleItem);
+        }
+    }
+
+    private void TryRemove(Item removeItem, IEnumerable<Item> chosenItems)
+    {
+        int removeAmount = removeItem.Amount.GetAmount();
+        int allAmount = 0;
+        foreach (Item item in chosenItems)
+        {
+            allAmount += item.Amount.GetAmount();
+        }
+
+        if (chosenItems.Count() > 1 && allAmount > removeAmount)
+        {
+            RemoveLastItem(chosenItems, removeAmount);
+        }
+        else if (chosenItems.Count() == 1 && allAmount > removeAmount)
+        {
+            RemoveSingleItem(chosenItems, removeAmount);
         }
     }
 
@@ -66,28 +123,7 @@ public class Inventory : MonoBehaviour, IPointerClickHandler
           where invItem.GetImage() == item.GetImage()
           select invItem;
 
-        if (chosenItems.Count() >= 2)
-        {
-            int diffAmount = chosenItems.Last().Amount.Decrease(item.Amount.GetAmount());
-            if (diffAmount > 0)
-            {
-                _itemList.Remove(chosenItems.Last());
-                chosenItems.ToList().Remove(chosenItems.Last());
-
-                chosenItems.Last().Amount.Decrease(diffAmount);
-            }
-        }
-        else if (chosenItems.Count() == 1)
-        {
-            if (chosenItems.First().Amount.GetAmount() > item.Amount.GetAmount())
-            {
-                chosenItems.First().Amount.Decrease(item.Amount.GetAmount());
-            }
-            else if (chosenItems.First().Amount.GetAmount() == item.Amount.GetAmount())
-            {
-                _itemList.Remove(chosenItems.First());
-            }
-        }
+        TryRemove(item, chosenItems);       
     }
 
     public List<Item> GetItemList()
