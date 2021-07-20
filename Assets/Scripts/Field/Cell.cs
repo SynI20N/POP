@@ -20,10 +20,11 @@ public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
 
     public void UpdateContents()
     {
+        Item item;
         foreach (Transform child in transform)
         {
-            Item item;
-            if (child.gameObject.TryGetComponent(out item))
+            bool result = child.gameObject.TryGetComponent(out item);
+            if (result && !_objects.Contains(item))
             {
                 _objects.Add(item);
             }
