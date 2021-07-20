@@ -1,9 +1,11 @@
+using System.Diagnostics;
+using UnityEngine;
 using static Unity.Mathematics.math;
 
 public class Amount
 {
     private int _currentAmount;
-    private int _maxAmount = 100;
+    private int _maxAmount;
 
     public Amount(int initAmount)
     {

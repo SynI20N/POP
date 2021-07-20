@@ -14,9 +14,9 @@ public class InventoryPanel : MonoBehaviour
     private Transform _itemSlotContainer;
     private Transform _itemSlotTemplate;
 
-    private const float _itemSlotSize = 100f;
-
     private CanvasGroup _canvasGroup;
+
+    private Vector3 _nextPos;
 
     private void Start()
     {
@@ -26,17 +26,21 @@ public class InventoryPanel : MonoBehaviour
         _itemSlotContainer = transform.Find("ItemSlotContanier");
         _itemSlotTemplate = _itemSlotContainer.Find("ItemSlotTemplate");
 
-        Inventory.onCharacterClick += LoadInventory;
+        _nextPos = new Vector3(50f, 50f, 0);
+
+        Inventory.onInventoryOpen += LoadInventory;
     }
 
     private void OnDestroy()
     {
-        CleanContainer();
-        Inventory.onCharacterClick -= LoadInventory;
+        SpawnHelper.ClearChildrenIn(_itemSlotContainer);
+        Inventory.onInventoryOpen -= LoadInventory;
     }
 
     private void LoadInventory(Inventory inventory)
     {
+        _nextPos = new Vector3(50f, 50f, 0);
+
         _inventory = inventory;
 
         CleanContainer();
@@ -59,25 +63,19 @@ public class InventoryPanel : MonoBehaviour
 
     private void RefreshInventoryItems()
     {
-        int x = 0;
-        int y = 0;
         foreach (Item item in _inventory.GetItemList())
         {
             RectTransform itemSlotRectTransform = CreatRectTransform();
             itemSlotRectTransform.gameObject.SetActive(true);
-
-            SetPosition(itemSlotRectTransform, x, y);
-            if (x > 10)
-            {
-                x = 0;
-                y++;
-            }
-
-            UnityEngine.UI.Image image = FindImage(itemSlotRectTransform);
-            image = item.GetImage();
-
+            
             TextMeshProUGUI uiText = FindText(itemSlotRectTransform);
             SetText(uiText, item);
+
+            UnityEngine.UI.Image image = FindImage(itemSlotRectTransform);
+            image.sprite = item.GetImage().sprite;
+
+            SetPosition(itemSlotRectTransform);
+            CalculateNextPos(itemSlotRectTransform);     
         }
     }
 
@@ -86,14 +84,26 @@ public class InventoryPanel : MonoBehaviour
         return Instantiate(_itemSlotTemplate, _itemSlotContainer).GetComponent<RectTransform>();
     }
 
-    private void SetPosition(RectTransform itemSlotRectTransform, int x, int y)
+    private void CalculateNextPos(RectTransform itemSlotRectTransform)
     {
-        itemSlotRectTransform.anchoredPosition = new Vector2(x * _itemSlotSize, -y * _itemSlotSize);
-    }
+        float width = itemSlotRectTransform.rect.width;
+        float height = itemSlotRectTransform.rect.height;
 
+        _nextPos += right * width;
+        if (_nextPos.x > 10 * width)
+        {
+            _nextPos += down * height;
+            _nextPos.x = 0;
+        }
+    }
     private UnityEngine.UI.Image FindImage(RectTransform itemSlotRectTransform)
     {
         return itemSlotRectTransform.Find("ItemImage").GetComponent<UnityEngine.UI.Image>();
+    }
+
+    private void SetPosition(RectTransform itemSlotRectTransform)
+    {
+        itemSlotRectTransform.anchoredPosition = new Vector2(_nextPos.x, _nextPos.y);
     }
 
     private TextMeshProUGUI FindText(RectTransform itemSlotRectTransform)
