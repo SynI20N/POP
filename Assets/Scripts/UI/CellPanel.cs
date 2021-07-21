@@ -26,12 +26,12 @@ public class CellPanel : MonoBehaviour
         _nextIconPos = zero;
         _items = new Stack<Item>();
 
-        Cell.onPointerClick += Open;
+        Cell.onClick += Open;
     }
 
     private void OnDestroy()
     {
-        Cell.onPointerClick -= Open;
+        Cell.onClick -= Open;
     }
 
     public void Close()
@@ -49,10 +49,11 @@ public class CellPanel : MonoBehaviour
     private void DisplayItems(Cell cell)
     {
         List<Item> contents = cell.GetObjects();
+        GameObject image;
         foreach (var c in contents)
         {
             _items.Push(c);
-            GameObject image = Instantiate(c.GetImage().gameObject, _firstItemPoint);
+            image = Instantiate(c.GetImage().gameObject, _firstItemPoint);
             image.GetComponent<RectTransform>().localPosition = _nextIconPos;
 
             CalculateNextPos(c.GetImage());

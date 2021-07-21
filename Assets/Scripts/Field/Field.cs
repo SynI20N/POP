@@ -12,11 +12,11 @@ public class Field : MonoBehaviour
 
     private void Start()
     {
-        _fieldMaterial = gameObject.GetComponent<MeshRenderer>().material;
+        _fieldMaterial = GetComponent<MeshRenderer>().material;
         _fieldBuilder = GetComponent<FieldBuilder>();
         _fieldMaterial.EnableKeyword("POS");
 
-        Cell.onPointerClick += Light;
+        Cell.onClick += Light;
         Timer.spawnSpawner += AddResourceSpawner;
 
         FindField();
@@ -24,7 +24,7 @@ public class Field : MonoBehaviour
 
     private void OnDestroy()
     {
-        Cell.onPointerClick -= Light;
+        Cell.onClick -= Light;
         Timer.spawnSpawner -= AddResourceSpawner;
     }
 

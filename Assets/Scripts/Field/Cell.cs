@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
 {
-    public static event Action<Cell> onPointerClick;
+    public static event Action<Cell> onClick;
 
     private List<Item> _objects = new List<Item>();
     private Transform _thisTransform;
@@ -43,7 +43,7 @@ public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData pointerEvent)
     {
-        onPointerClick(this);
+        onClick(this);
     }
 
     public Vector3 GetPosition()
