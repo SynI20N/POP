@@ -9,6 +9,7 @@ public class CellPanel : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _textDescription;
     [SerializeField] private RectTransform _firstItemPoint;
+    [SerializeField] private uint _itemsPerRow;
 
     private const float _tweenTime = 0.5f;
     private const float _openSize = 0.6f;
@@ -64,7 +65,7 @@ public class CellPanel : MonoBehaviour
         float height = image.sprite.rect.height;
 
         _nextIconPos += right * width;
-        if (_nextIconPos.x > 3 * width)
+        if (_nextIconPos.x >= _itemsPerRow * width)
         {
             _nextIconPos += down * height;
             _nextIconPos.x = 0;
