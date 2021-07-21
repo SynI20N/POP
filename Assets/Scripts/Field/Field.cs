@@ -1,112 +1,81 @@
 using UnityEngine;
+using static UnityEngine.Random;
 
+[RequireComponent(typeof(FieldBuilder))]
 public class Field : MonoBehaviour
 {
-    [SerializeField] private int _height;
-    [SerializeField] private int _length;
-
-    [SerializeField] private Cell _cellPrefab;
+    private const int _default = -100;
 
     private Cell[,] _field;
-    private const int _inTheMiddleOfNowhere = -100;
-
     private Material _fieldMaterial;
-
-    private void Awake()
-    {
-        _field = new Cell[_length, _height];
-        CreateField();
-    }
+    private FieldBuilder _fieldBuilder;
 
     private void Start()
     {
-        _fieldMaterial = gameObject.GetComponent<Terrain>().materialTemplate;
+        _fieldMaterial = gameObject.GetComponent<MeshRenderer>().material;
+        _fieldBuilder = GetComponent<FieldBuilder>();
         _fieldMaterial.EnableKeyword("POS");
 
         Cell.onPointerClick += Light;
-        Timer.spawnSpawner += SpawnSpawner;
+        Timer.spawnSpawner += AddResourceSpawner;
+
+        FindField();
     }
 
     private void OnDestroy()
     {
         Cell.onPointerClick -= Light;
-        Timer.spawnSpawner -= SpawnSpawner;
+        Timer.spawnSpawner -= AddResourceSpawner;
     }
 
-    private void CreateField()
+    private void FindField()
     {
-        for (int x = 0; x < _length; x++)
+        uint length = _fieldBuilder.GetLength();
+        uint height = _fieldBuilder.GetHeight();
+        _field = new Cell[length, height];
+        Cell[] field = FindObjectsOfType<Cell>();
+        int i = 0;
+        for (int x = 0; x < length; x++)
         {
-            for (int z = 0; z < _height; z++)
+            for (int y = 0; y < height; y++)
             {
-                _field[x, z] = CreateCell(x, z);
+                _field[x, y] = field[i];
+                i++;
             }
         }
     }
 
-    private Cell CreateCell(int x, int z)
-    {
-        Vector3 position = FromCellCoordinates(x, z);
-
-        Cell cell = Instantiate(_cellPrefab);
-        cell.transform.SetParent(transform, false);
-        cell.transform.localPosition = position;
-        return cell;
-    }
-
-    private Vector3 FromCellCoordinates(int x, int z)
-    {
-        Vector3 position = new Vector3();
-
-        position.x = x * (CellMetrics.innerRadius * 2f);
-        position.x = (x + z * 0.5f) * (CellMetrics.innerRadius * 2f);
-        position.x = (x + z * 0.5f - z / 2) * (CellMetrics.innerRadius * 2f);
-        position.x += 1.56f;
-        position.y = 0f;
-        position.z = z * (CellMetrics.outerRadius * 1.5f);
-
-        return position;
-    }
-
     private Cell ChooseRandomCell()
     {
-        int x = Random.Range(0, _length);
-        int z = Random.Range(0, _height);
+        int x = Range(0, _field.GetLength(0));
+        int z = Range(0, _field.GetLength(1));
 
-        if (_field[x, z].CheckSpawn())
+        if (_field[x, z] != null && _field[x, z].CheckSpawn())
         {
             return _field[x, z];
         }
         return null;
     }
 
-    private void AddResourceSpawner(Cell cell)
+    private void AddResourceSpawner()
     {
+        Cell cell = ChooseRandomCell();
         if (cell.CheckSpawn())
         {
             cell.gameObject.AddComponent<ResourceSpawner>();
         }
     }
 
-    private void SpawnSpawner()
-    {
-        Cell cell = ChooseRandomCell();
-        if (cell != null)
-        {
-            AddResourceSpawner(cell);
-        }
-    }
-
     private void Light(Cell cell)
     {
-        Vector3 position = cell.GetTransform().position;
+        Vector3 position = cell.GetPosition();
         Vector4 shaderPos = new Vector4(position.x, position.z, 0, 0);
         _fieldMaterial.SetVector("_Pos", shaderPos);
     }
 
     public void Unlight()
     {
-        Vector4 position = new Vector4(_inTheMiddleOfNowhere, _inTheMiddleOfNowhere, 0, 0);
+        Vector4 position = new Vector4(_default, _default, 0, 0);
         _fieldMaterial.SetVector("_Pos", position);
     }
 }

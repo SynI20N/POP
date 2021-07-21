@@ -1,8 +1,7 @@
 using UnityEngine;
 
-public class Resource : MonoBehaviour
+public class Resource : Item
 {
-    [SerializeField] private int _resourceAmount;
     private GameObject _resource;
 
     private void Start()

@@ -1,26 +1,42 @@
+using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(Cell))]
 public class ResourceSpawner : MonoBehaviour
 {
-    private Object _resourcePrefab;
+    private GameObject _resourcePrefab;
+    private Cell _thisCell;
 
-    private int _resourceBoxCounter = 0;
+    private const uint _maxResourceCount = 10;
+    private uint _resourceCount;
+
     private void Start()
     {
         Timer.spawnResource += CreateResource;
-        _resourcePrefab = Resources.Load<GameObject>("Prefabs/Resource");
+        _resourcePrefab = Resources.Load<GameObject>("Prefabs/Iron");
+        _thisCell = GetComponent<Cell>();
     }
 
     private void CreateResource()
     {
-        GameObject resource = Instantiate(_resourcePrefab) as GameObject;
-        resource.transform.SetParent(gameObject.transform, false);
-        resource.transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
+        if (_resourceCount > _maxResourceCount)
+        {
+            Timer.spawnResource -= CreateResource;
+            StopAllCoroutines();
+            Destroy(this);
+        }
+        Vector3 spawnPos = SpawnHelper.PosInsideCircle(gameObject);
+        GameObject resource = Instantiate(_resourcePrefab, spawnPos, Quaternion.identity);
+        resource.transform.SetParent(_thisCell.transform);
+        _thisCell.UpdateContents();
+        StartCoroutine("DelayedRest", resource);
+        _resourceCount++;
+    }
 
-        resource.transform.position = new Vector3(resource.transform.position.x,
-                                                  _resourceBoxCounter * 1.2f,
-                                                  resource.transform.position.z);
+    private IEnumerator DelayedRest(GameObject someObject)
+    {
+        yield return new WaitForSeconds(3);
 
-        _resourceBoxCounter += 1;
+        Destroy(someObject.GetComponent<Rigidbody>());
     }
 }

@@ -5,26 +5,30 @@ using UnityEngine.EventSystems;
 
 public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
 {
-    private List<GameObject> _objects = new List<GameObject>();
-
     public static event Action<Cell> onPointerClick;
 
+    private List<Item> _objects = new List<Item>();
     private Transform _thisTransform;
     private bool _spawnAbility = true;
 
     private void Start()
     {
         _thisTransform = gameObject.transform;
+
+        UpdateContents();
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void UpdateContents()
     {
-        AddObject(other.gameObject);
-    }
-
-    public void AddObject(GameObject gameObject)
-    {
-        _objects.Add(gameObject);
+        Item item;
+        foreach (Transform child in transform)
+        {
+            bool result = child.gameObject.TryGetComponent(out item);
+            if (result && !_objects.Contains(item))
+            {
+                _objects.Add(item);
+            }
+        }
     }
 
     public bool CheckSpawn()
@@ -42,13 +46,14 @@ public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
         onPointerClick(this);
     }
 
-    public Transform GetTransform()
+    public Vector3 GetPosition()
     {
-        return _thisTransform;
+        return _thisTransform.position;
     }
 
-    public List<GameObject> GetObjects()
+    public List<Item> GetObjects()
     {
-        return _objects;
+        List<Item> result = new List<Item>(_objects);
+        return result;
     }
 }
