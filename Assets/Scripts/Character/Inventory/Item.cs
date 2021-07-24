@@ -8,7 +8,7 @@ public class Item : MonoBehaviour
 
     public Amount Amount { get; private set; }
 
-    private void Start()
+    protected virtual void Start()
     {
         Amount = new Amount(1);
         Amount.SetMax(_maxAmount);

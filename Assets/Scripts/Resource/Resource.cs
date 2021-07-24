@@ -4,8 +4,9 @@ public class Resource : Item
 {
     private GameObject _resource;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         _resource = gameObject;
     }
 }

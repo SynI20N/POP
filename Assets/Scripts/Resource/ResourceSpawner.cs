@@ -28,7 +28,7 @@ public class ResourceSpawner : MonoBehaviour
         Vector3 spawnPos = SpawnHelper.PosInsideCircle(gameObject);
         GameObject resource = Instantiate(_resourcePrefab, spawnPos, Quaternion.identity);
         resource.transform.SetParent(_thisCell.transform);
-        _thisCell.UpdateContents();
+        //_thisCell.UpdateContents();
         StartCoroutine("DelayedRest", resource);
         _resourceCount++;
     }

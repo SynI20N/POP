@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
+public class Cell : Inventory, IPointerClickHandler
 {
     public static event Action<Cell> onPointerClick;
 
-    private List<Item> _objects = new List<Item>();
     private Transform _thisTransform;
     private bool _spawnAbility = true;
 
-    private void Start()
+    protected new void Start()
     {
+        base.Start();
         _thisTransform = gameObject.transform;
-
-        UpdateContents();
+        UpdateContents();      
     }
 
     public void UpdateContents()
@@ -24,9 +23,9 @@ public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
         foreach (Transform child in transform)
         {
             bool result = child.gameObject.TryGetComponent(out item);
-            if (result && !_objects.Contains(item))
+            if (result && !base.GetItemList().Contains(item))
             {
-                _objects.Add(item);
+                base.AddItem(item);
             }
         }
     }
@@ -41,19 +40,14 @@ public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
         _spawnAbility = ability;
     }
 
-    public void OnPointerClick(PointerEventData pointerEvent)
+    public new void OnPointerClick(PointerEventData pointerEvent)
     {
         onPointerClick(this);
+        base.OnPointerClick(pointerEvent);
     }
 
     public Vector3 GetPosition()
     {
         return _thisTransform.position;
-    }
-
-    public List<Item> GetObjects()
-    {
-        List<Item> result = new List<Item>(_objects);
-        return result;
     }
 }

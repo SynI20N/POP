@@ -44,9 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebf8fc91271af624eaa18a10a39004d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onStart:
-    m_PersistentCalls:
-      m_Calls: []
+  _maxSlots: 20
 --- !u!64 &6217754163203897431
 MeshCollider:
   m_ObjectHideFlags: 0

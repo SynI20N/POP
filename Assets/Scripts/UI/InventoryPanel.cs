@@ -5,17 +5,18 @@ using static UnityEngine.Vector3;
 
 public class InventoryPanel : MonoBehaviour
 {
+    [SerializeField] private int _iconsInLenght;
+    [SerializeField] private float _offset;
+
     private const float _tweenTime = 0.5f;
     private const float _startOpenSize = 0.6f;
-
+    
+    private CanvasGroup _canvasGroup;
     private GameObject _panel;
+    private Transform _itemSlotContainer;
 
     private Inventory _inventory;
-    private Transform _itemSlotContainer;
-    private Transform _itemSlotTemplate;
-
-    private CanvasGroup _canvasGroup;
-
+    
     private Vector3 _nextPos;
 
     private void Start()
@@ -24,7 +25,6 @@ public class InventoryPanel : MonoBehaviour
         _canvasGroup = _panel.GetComponent<CanvasGroup>();
 
         _itemSlotContainer = transform.Find("ItemSlotContanier");
-        _itemSlotTemplate = _itemSlotContainer.Find("ItemSlotTemplate");
 
         _nextPos = new Vector3(50f, 50f, 0);
 
@@ -39,76 +39,58 @@ public class InventoryPanel : MonoBehaviour
 
     private void LoadInventory(Inventory inventory)
     {
-        _nextPos = new Vector3(50f, 50f, 0);
+        _nextPos = new Vector3(50f + _offset, -50f, 0);
 
         _inventory = inventory;
 
-        CleanContainer();
+        SpawnHelper.ClearChildrenIn(_itemSlotContainer);
 
         RefreshInventoryItems();
 
         Animate(1f);
     }
 
-    private void CleanContainer()
-    {
-        foreach (Transform child in _itemSlotContainer)
-        {
-            if (child != _itemSlotTemplate)
-            {
-                Destroy(child.gameObject);
-            }
-        }
-    }
-
     private void RefreshInventoryItems()
     {
         foreach (Item item in _inventory.GetItemList())
         {
-            RectTransform itemSlotRectTransform = CreatRectTransform();
-            itemSlotRectTransform.gameObject.SetActive(true);
+            GameObject icon = CreateIcon(item);
+            //itemSlotRectTransform.gameObject.SetActive(true);
             
-            TextMeshProUGUI uiText = FindText(itemSlotRectTransform);
+            TextMeshProUGUI uiText = FindText(icon);
             SetText(uiText, item);
 
-            UnityEngine.UI.Image image = FindImage(itemSlotRectTransform);
-            image.sprite = item.GetImage().sprite;
-
-            SetPosition(itemSlotRectTransform);
-            CalculateNextPos(itemSlotRectTransform);     
+            SetPosition(icon);
+            CalculateNextPos(icon);     
         }
     }
 
-    private RectTransform CreatRectTransform()
+    private GameObject CreateIcon(Item item)
     {
-        return Instantiate(_itemSlotTemplate, _itemSlotContainer).GetComponent<RectTransform>();
+        return Instantiate(item.GetImage().gameObject, _itemSlotContainer);
     }
 
-    private void CalculateNextPos(RectTransform itemSlotRectTransform)
+    private void CalculateNextPos(GameObject icon)
     {
-        float width = itemSlotRectTransform.rect.width;
-        float height = itemSlotRectTransform.rect.height;
-
-        _nextPos += right * width;
-        if (_nextPos.x > 10 * width)
+        float width = icon.GetComponent<RectTransform>().rect.width;
+        float height = icon.GetComponent<RectTransform>().rect.height;
+        
+        _nextPos += right * (width + _offset);
+        if (_nextPos.x > _iconsInLenght * (width + _offset))
         {
-            _nextPos += down * height;
-            _nextPos.x = 0;
+            _nextPos += down * (height + _offset);
+            _nextPos.x = 50f + _offset;
         }
     }
-    private UnityEngine.UI.Image FindImage(RectTransform itemSlotRectTransform)
+
+    private void SetPosition(GameObject icon)
     {
-        return itemSlotRectTransform.Find("ItemImage").GetComponent<UnityEngine.UI.Image>();
+        icon.GetComponent<RectTransform>().anchoredPosition = _nextPos;
     }
 
-    private void SetPosition(RectTransform itemSlotRectTransform)
+    private TextMeshProUGUI FindText(GameObject icon)
     {
-        itemSlotRectTransform.anchoredPosition = new Vector2(_nextPos.x, _nextPos.y);
-    }
-
-    private TextMeshProUGUI FindText(RectTransform itemSlotRectTransform)
-    {
-        return itemSlotRectTransform.Find("Amount").GetComponent<TextMeshProUGUI>();
+        return icon.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     private void SetText(TextMeshProUGUI uiText, Item item)

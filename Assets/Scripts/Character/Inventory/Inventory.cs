@@ -14,7 +14,7 @@ public class Inventory : MonoBehaviour, IPointerClickHandler
 
     public static event Action<Inventory> onInventoryOpen;
 
-    private void Start()
+    protected virtual void Start()
     {
         _chosenItems = new List<Item>();
         _itemList = new List<Item>();
@@ -126,7 +126,6 @@ public class Inventory : MonoBehaviour, IPointerClickHandler
         if (_itemList.Count() < _maxSlots)
         {
             _itemList.Add(item);
-            Destroy(item.gameObject);
         }
 
         PolishInventory(item);
