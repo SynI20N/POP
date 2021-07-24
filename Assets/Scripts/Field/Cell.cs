@@ -1,19 +1,23 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
+[Serializable]
+[JsonObject(MemberSerialization.OptIn)]
+public class Cell : MonoBehaviour, IPointerClickHandler
 {
-    public static event Action<Cell> onClick;
-
-    private List<Item> _objects = new List<Item>();
-    private Transform _thisTransform;
-    private bool _spawnAbility = true;
+    public static event Action<Cell> OnClick;
+    
+    //serialized
+    [JsonProperty] private List<Item> _items = new List<Item>();
+    [JsonProperty] private bool _isPassable = true;
+    [JsonProperty] private List<Vector3> _objects;
 
     private void Start()
     {
-        _thisTransform = gameObject.transform;
+        _objects = new List<Vector3>();
 
         UpdateContents();
     }
@@ -23,37 +27,41 @@ public class Cell : MonoBehaviour, ISpawnable, IPointerClickHandler
         Item item;
         foreach (Transform child in transform)
         {
-            bool result = child.gameObject.TryGetComponent(out item);
-            if (result && !_objects.Contains(item))
+            if (!_objects.Contains(child.transform.position))
             {
-                _objects.Add(item);
+                _objects.Add(child.transform.position);
+            }
+            bool result = child.gameObject.TryGetComponent(out item);
+            if (result && !_items.Contains(item))
+            {
+                _items.Add(item);
             }
         }
     }
 
-    public bool CheckSpawn()
+    public bool CheckPassable()
     {
-        return _spawnAbility;
+        return _isPassable;
     }
 
     public void SetAbility(bool ability)
     {
-        _spawnAbility = ability;
+        _isPassable = ability;
     }
 
     public void OnPointerClick(PointerEventData pointerEvent)
     {
-        onClick(this);
+        OnClick(this);
     }
 
     public Vector3 GetPosition()
     {
-        return _thisTransform.position;
+        return transform.position;
     }
 
-    public List<Item> GetObjects()
+    public List<Item> GetItems()
     {
-        List<Item> result = new List<Item>(_objects);
+        List<Item> result = new List<Item>(_items);
         return result;
     }
 }

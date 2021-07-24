@@ -1,6 +1,8 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteAlways]
 [RequireComponent(typeof(Cell))]
 public class ResourceSpawner : MonoBehaviour
 {
@@ -14,8 +16,17 @@ public class ResourceSpawner : MonoBehaviour
     private void Start()
     {
         Timer.spawnResource += CreateResource;
-        _resourcePrefab = Resources.Load<GameObject>("Prefabs/Iron");
         _thisCell = GetComponent<Cell>();
+        GetPrefab();
+    }
+
+    private void GetPrefab()
+    {
+        List<GameObject> _resourcePrefabs = new List<GameObject>();
+        _resourcePrefabs.Add(Resources.Load<GameObject>("Prefabs/Resources/Iron"));
+        _resourcePrefabs.Add(Resources.Load<GameObject>("Prefabs/Resources/Copper"));
+        int i = Random.Range(0, _resourcePrefabs.Count);
+        _resourcePrefab = _resourcePrefabs[i];
     }
 
     private void CreateResource()
