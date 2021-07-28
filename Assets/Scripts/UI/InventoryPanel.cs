@@ -28,13 +28,13 @@ public class InventoryPanel : MonoBehaviour
 
         _nextPos = new Vector3(50f, 50f, 0);
 
-        Inventory.onInventoryOpen += LoadInventory;
+        Inventory.OnInventoryOpen += LoadInventory;
     }
 
     private void OnDestroy()
     {
         SpawnHelper.ClearChildrenIn(_itemSlotContainer);
-        Inventory.onInventoryOpen -= LoadInventory;
+        Inventory.OnInventoryOpen -= LoadInventory;
     }
 
     private void LoadInventory(Inventory inventory)
@@ -95,13 +95,9 @@ public class InventoryPanel : MonoBehaviour
 
     private void SetText(TextMeshProUGUI uiText, Item item)
     {
-        if (item.Amount.GetAmount() > 1)
+        if (item.Amount.GetAmount() >= 1)
         {
             uiText.SetText("x" + item.Amount.GetAmount().ToString());
-        }
-        else
-        {
-            uiText.SetText("");
         }
     }
 

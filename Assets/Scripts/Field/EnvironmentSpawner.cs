@@ -35,7 +35,6 @@ public class EnvironmentSpawner : MonoBehaviour
 
     private void PosOnGround()
     {
-        float upScale = _environmentPrefabs[_counter].transform.localScale.z / 2;
         _spawnPos = _hit.point;
         _rotation = Quaternion.FromToRotation(up, _hit.normal);
     }

@@ -1,19 +1,25 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+[Serializable]
+[JsonObject(MemberSerialization.OptIn)]
 public class Cell : Inventory, IPointerClickHandler
 {
-    public static event Action<Cell> onPointerClick;
-
-    private Transform _thisTransform;
-    private bool _spawnAbility = true;
+    public static event Action<Cell> OnClick;
+    
+    //serialized
+    [JsonProperty] private List<Item> _items;
+    [JsonProperty] private bool _isPassable = true;
+    [JsonProperty] private List<Vector3> _objects;
 
     protected new void Start()
     {
         base.Start();
-        _thisTransform = gameObject.transform;
+        _objects = new List<Vector3>();
+        _items = new List<Item>();
         UpdateContents();      
     }
 
@@ -22,32 +28,43 @@ public class Cell : Inventory, IPointerClickHandler
         Item item;
         foreach (Transform child in transform)
         {
+            if (!_objects.Contains(child.transform.position))
+            {
+                _objects.Add(child.transform.position);
+            }
             bool result = child.gameObject.TryGetComponent(out item);
-            if (result && !base.GetItemList().Contains(item))
+            if (result && !_items.Contains(item))
             {
                 base.AddItem(item);
+                _items.Add(item);              
             }
         }
     }
 
-    public bool CheckSpawn()
+    public bool CheckPassable()
     {
-        return _spawnAbility;
+        return _isPassable;
     }
 
     public void SetAbility(bool ability)
     {
-        _spawnAbility = ability;
+        _isPassable = ability;
     }
 
     public new void OnPointerClick(PointerEventData pointerEvent)
     {
-        onPointerClick(this);
+        OnClick(this);
         base.OnPointerClick(pointerEvent);
     }
 
     public Vector3 GetPosition()
     {
-        return _thisTransform.position;
+        return transform.position;
+    }
+
+    public List<Item> GetItems()
+    {
+        List<Item> result = new List<Item>(_items);
+        return result;
     }
 }

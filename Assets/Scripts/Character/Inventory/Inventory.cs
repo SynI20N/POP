@@ -12,7 +12,7 @@ public class Inventory : MonoBehaviour, IPointerClickHandler
 
     private List<Item> _chosenItems;
 
-    public static event Action<Inventory> onInventoryOpen;
+    public static event Action<Inventory> OnInventoryOpen;
 
     protected virtual void Start()
     {
@@ -26,18 +26,18 @@ public class Inventory : MonoBehaviour, IPointerClickHandler
         {
             var chosenItems =
                 from invItem in _itemList
-                where invItem.GetImage() == item.GetImage() &&
+                where invItem.GetSprite().name == item.GetSprite().name &&
                 !invItem.Amount.IsFull()
                 select invItem;
-            _chosenItems = new List<Item>(chosenItems);
+            _chosenItems = new List<Item>(chosenItems.ToList());
         }
         else
         {
             var chosenItems =
                 from invItem in _itemList
-                where invItem.GetImage() == item.GetImage()
+                where invItem.GetSprite().name == item.GetSprite().name
                 select invItem;
-            _chosenItems = new List<Item>(chosenItems);
+            _chosenItems = new List<Item>(chosenItems.ToList());
         }    
     }
 
@@ -126,6 +126,7 @@ public class Inventory : MonoBehaviour, IPointerClickHandler
         if (_itemList.Count() < _maxSlots)
         {
             _itemList.Add(item);
+            _itemList.Add(item);
         }
 
         PolishInventory(item);
@@ -152,6 +153,6 @@ public class Inventory : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData pointerEvent)
     {
-        onInventoryOpen.Invoke(this);
+        OnInventoryOpen.Invoke(this);
     }
 }

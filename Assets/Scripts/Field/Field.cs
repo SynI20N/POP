@@ -1,31 +1,52 @@
+using Newtonsoft.Json;
 using UnityEngine;
+using System.Linq;
 using static UnityEngine.Random;
 
 [RequireComponent(typeof(FieldBuilder))]
+[JsonObject(MemberSerialization.OptIn)]
 public class Field : MonoBehaviour
 {
     private const int _default = -100;
 
-    private Cell[,] _field;
+    [JsonProperty] private Cell[,] _field;
+
     private Material _fieldMaterial;
     private FieldBuilder _fieldBuilder;
 
+    public Cell[,] GetField()
+    {
+        uint length = _fieldBuilder.GetLength();
+        uint height = _fieldBuilder.GetHeight();
+        Cell[,] copy = new Cell[length, height];
+
+        _field.CopyTo(copy, 0);
+
+        return copy;
+    }
+
     private void Start()
     {
-        _fieldMaterial = gameObject.GetComponent<MeshRenderer>().material;
+        _fieldMaterial = GetComponent<MeshRenderer>().material;
         _fieldBuilder = GetComponent<FieldBuilder>();
         _fieldMaterial.EnableKeyword("POS");
 
-        Cell.onPointerClick += Light;
+        Cell.OnClick += Light;
         Timer.spawnSpawner += AddResourceSpawner;
 
         FindField();
+        //FieldSaver.Load();
     }
 
     private void OnDestroy()
     {
-        Cell.onPointerClick -= Light;
+        Cell.OnClick -= Light;
         Timer.spawnSpawner -= AddResourceSpawner;
+    }
+
+    private void OnApplicationQuit()
+    {
+        FieldSaver.Save(this);
     }
 
     private void FindField()
@@ -50,7 +71,7 @@ public class Field : MonoBehaviour
         int x = Range(0, _field.GetLength(0));
         int z = Range(0, _field.GetLength(1));
 
-        if (_field[x, z] != null && _field[x, z].CheckSpawn())
+        if (_field[x, z] != null && _field[x, z].CheckPassable())
         {
             return _field[x, z];
         }
@@ -60,7 +81,7 @@ public class Field : MonoBehaviour
     private void AddResourceSpawner()
     {
         Cell cell = ChooseRandomCell();
-        if (cell.CheckSpawn())
+        if (cell.CheckPassable())
         {
             cell.gameObject.AddComponent<ResourceSpawner>();
         }
