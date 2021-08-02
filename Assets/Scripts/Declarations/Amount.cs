@@ -27,9 +27,10 @@ public class Amount
     public int Increase(int amount)
     {
         if (!Assert(amount, 0, _maxAmount - _currentAmount))
-        {
+        {           
+            amount -= _maxAmount - _currentAmount;
             _currentAmount = _maxAmount;
-            return amount - (_maxAmount - _currentAmount);
+            return amount;
         }
         _currentAmount += amount;
         return 0;
