@@ -1,12 +1,11 @@
 using UnityEngine;
 
-public class Resource : Item
+public class Resource : MonoBehaviour
 {
     private GameObject _resource;
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
         _resource = gameObject;
     }
 }

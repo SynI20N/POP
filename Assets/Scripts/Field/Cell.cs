@@ -25,16 +25,17 @@ public class Cell : Inventory, IPointerClickHandler
 
     public void UpdateContents()
     {
-        Item item;
+        ItemComponent itemComponent;
         foreach (Transform child in transform)
         {
             if (!_objects.Contains(child.transform.position))
             {
                 _objects.Add(child.transform.position);
             }
-            bool result = child.gameObject.TryGetComponent(out item);
-            if (result && !_items.Contains(item))
+            bool result = child.gameObject.TryGetComponent(out itemComponent);
+            if (result && !_items.Contains(itemComponent.GetThisItem()))
             {
+                Item item = itemComponent.GetThisItem();
                 base.AddItem(item);
                 _items.Add(item);              
             }

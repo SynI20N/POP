@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8679368315377095536}
   - component: {fileID: 4118556922773563991}
   - component: {fileID: -8465504952443541559}
-  - component: {fileID: 379878682601052305}
+  - component: {fileID: 8443135665629943185}
   m_Layer: 8
   m_Name: Copper
   m_TagString: Untagged
@@ -114,7 +114,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 10
   m_CollisionDetection: 1
---- !u!114 &379878682601052305
+--- !u!114 &8443135665629943185
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,8 +123,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7166268310533354149}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 134ee876cdc3acd4780835914d79af62, type: 3}
+  m_Script: {fileID: 11500000, guid: 497550b9c48658f48aba081a0d293d38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _image: {fileID: 3277588636684766674, guid: eb0d2a52cda719447a80b7446034b919, type: 3}
-  _maxAmount: 80
+  _startAmount: 10
+  _maxAmount: 50

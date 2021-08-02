@@ -7,9 +7,10 @@ public class Amount
     private int _currentAmount;
     private int _maxAmount;
 
-    public Amount(int initAmount)
+    public Amount(int initAmount, int maxAmount)
     {
         _currentAmount = initAmount;
+        _maxAmount = maxAmount;
     }
 
     public int Decrease(int amount)
@@ -59,10 +60,5 @@ public class Amount
         {
             return false;
         }
-    }
-
-    public void SetMax(int maxAmount)
-    {
-        _maxAmount = maxAmount;
     }
 }

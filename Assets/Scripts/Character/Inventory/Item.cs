@@ -2,31 +2,29 @@ using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
 using System;
+using System.Data;
 
 [Serializable]
 [JsonObject(MemberSerialization.OptIn)]
-public class Item : MonoBehaviour
+public class Item
 {
-    [SerializeField] private Image _image;
-    [SerializeField] private int _maxAmount;
+    private Image _image;
 
     [JsonProperty] public Amount Amount { get; private set; }
 
-    protected virtual void Start()
+    public Item(int currentAmount, int maxAmount, Image image)
     {
-        Amount = new Amount(1);
-        Amount.SetMax(_maxAmount);
+        Amount = new Amount(currentAmount, maxAmount);
+        _image = image;
+    }
+
+    public string GetIconName()
+    {
+        return _image.name;
     }
 
     public Image GetImage()
-    { 
-        return _image;
-    }
-
-    public Sprite GetSprite()
     {
-        Sprite sprite = _image.sprite;
-        Sprite copy = Sprite.Create(sprite.texture, sprite.rect, sprite.pivot);
-        return copy;
+        return _image;
     }
 }

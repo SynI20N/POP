@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: -7728935161833251210}
   - component: {fileID: -5947289254530497861}
   - component: {fileID: -3454696517323585326}
-  - component: {fileID: 3260842304628613653}
   - component: {fileID: -2477335263609988283}
+  - component: {fileID: -4507120376696880969}
   m_Layer: 8
   m_Name: Iron
   m_TagString: Untagged
@@ -98,20 +98,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -6938710573835471721, guid: 1ac6bba87c54e7f4dbca4f6ba2c1a410, type: 3}
---- !u!114 &3260842304628613653
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 961267799233126583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 134ee876cdc3acd4780835914d79af62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _image: {fileID: 3277588636684766674, guid: b41b2a52c3bb6ad4a9d09400f77f1c3d, type: 3}
-  _maxAmount: 50
 --- !u!54 &-2477335263609988283
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -128,3 +114,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 10
   m_CollisionDetection: 1
+--- !u!114 &-4507120376696880969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 961267799233126583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 497550b9c48658f48aba081a0d293d38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _image: {fileID: 3277588636684766674, guid: b41b2a52c3bb6ad4a9d09400f77f1c3d, type: 3}
+  _startAmount: 10
+  _maxAmount: 30

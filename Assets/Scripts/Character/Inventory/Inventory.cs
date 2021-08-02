@@ -22,22 +22,23 @@ public class Inventory : MonoBehaviour, IPointerClickHandler
 
     private void ChooseItems(Item item, int mode)
     {
+        _chosenItems.Clear();
         if (mode == 0)
         {
-            var chosenItems =
+            IEnumerable<Item> chosenItems =
                 from invItem in _itemList
-                where invItem.GetSprite().name == item.GetSprite().name &&
+                where invItem.GetIconName().Equals(item.GetIconName()) &&
                 !invItem.Amount.IsFull()
                 select invItem;
-            _chosenItems = new List<Item>(chosenItems.ToList());
+            _chosenItems = chosenItems.ToList();
         }
         else
         {
-            var chosenItems =
+            IEnumerable<Item> chosenItems =
                 from invItem in _itemList
-                where invItem.GetSprite().name == item.GetSprite().name
+                where invItem.GetIconName().Equals(item.GetIconName())
                 select invItem;
-            _chosenItems = new List<Item>(chosenItems.ToList());
+            _chosenItems = chosenItems.ToList();
         }    
     }
 
@@ -58,7 +59,7 @@ public class Inventory : MonoBehaviour, IPointerClickHandler
 
         int seccondAmount = secondItem.Amount.GetAmount();
 
-        int amountRemain = firstItem.Amount.Increase(seccondAmount );
+        int amountRemain = firstItem.Amount.Increase(seccondAmount);
         secondItem.Amount.Decrease(seccondAmount);
         if (amountRemain > 0)
         {
@@ -126,9 +127,7 @@ public class Inventory : MonoBehaviour, IPointerClickHandler
         if (_itemList.Count() < _maxSlots)
         {
             _itemList.Add(item);
-            _itemList.Add(item);
         }
-
         PolishInventory(item);
     }
 
@@ -142,8 +141,6 @@ public class Inventory : MonoBehaviour, IPointerClickHandler
         ChooseItems(item, 1);
 
         TryRemove(item);
-
-        Destroy(item.gameObject);
     }
 
     public List<Item> GetItemList()
