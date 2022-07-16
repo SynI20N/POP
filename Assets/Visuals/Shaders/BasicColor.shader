@@ -7,7 +7,7 @@
     }
     SubShader 
     {
-        Cull back
+        Cull Back
         Tags { "RenderType" = "Opaque" }
 
         CGPROGRAM

@@ -25,33 +25,40 @@ public class InventoryPanel : MonoBehaviour
     {
         _panel = gameObject;
         _canvasGroup = _panel.GetComponent<CanvasGroup>();
+        _canvasGroup.blocksRaycasts = false;
 
         _itemSlotContainer = transform.Find("ItemSlotContanier");
         _itemSlotTemplate = _itemSlotContainer.Find("ItemSlotTemplate");
 
         SetSlotSize();
 
-        Inventory.onCharacterClick += LoadInventory;
+        Character.OnCharacterClick += loadInventory;
     }
 
     private void OnDestroy()
     {
-        CleanContainer();
-        Inventory.onCharacterClick -= LoadInventory;
+        cleanContainer();
+        Character.OnCharacterClick -= loadInventory;
+        _inventory.OnDirty -= updateInventory;
     }
 
-    private void LoadInventory(Inventory inventory)
+    private void loadInventory(Inventory inventory)
     {
+        if (_inventory != null)
+        {
+            _inventory.OnDirty -= updateInventory;
+        }
         _inventory = inventory;
+        _inventory.OnDirty += updateInventory;
 
-        CleanContainer();
+        cleanContainer();
 
-        RefreshInventoryItems();
+        refreshInventoryItems();
 
         Animate(1f);
     }
 
-    private void CleanContainer()
+    private void cleanContainer()
     {
         foreach (Transform child in _itemSlotContainer)
         {
@@ -62,7 +69,14 @@ public class InventoryPanel : MonoBehaviour
         }
     }
 
-    private void RefreshInventoryItems()
+    private void updateInventory()
+    {
+        cleanContainer();
+
+        refreshInventoryItems();
+    }
+
+    private void refreshInventoryItems()
     {
         int x = 0;
         int y = 0;
@@ -77,9 +91,10 @@ public class InventoryPanel : MonoBehaviour
                 x = 0;
                 y++;
             }
+            x++;
 
             UnityEngine.UI.Image image = FindImage(itemSlotRectTransform);
-            image = item.GetImage();
+            image.sprite = item.GetImage().sprite;
 
             TextMeshProUGUI uiText = FindText(itemSlotRectTransform);
             SetText(uiText, item);
@@ -108,13 +123,13 @@ public class InventoryPanel : MonoBehaviour
 
     private void SetText(TextMeshProUGUI uiText, Item item)
     {
-        if (item.Amount.GetAmount() > 1)
+        if (item.Amount.Value() > 1)
         {
-            uiText.SetText("x" + item.Amount.GetAmount().ToString());
+            uiText.text = ("x" + item.Amount.Value().ToString());
         }
         else
         {
-            uiText.SetText("");
+            uiText.text = ("");
         }
     }
 
@@ -134,6 +149,7 @@ public class InventoryPanel : MonoBehaviour
     private void Animate(float alpha)
     {
         _canvasGroup.alpha = alpha;
+        _canvasGroup.blocksRaycasts = true;
         _panel.transform.localScale = one * _startOpenSize;
         _panel.transform.DOKill();
         _panel.transform.DOScale(alpha, _tweenTime);

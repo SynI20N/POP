@@ -112,6 +112,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 3277588636684766674, guid: b41b2a52c3bb6ad4a9d09400f77f1c3d, type: 3}
   _maxAmount: 50
+  Amount:
+    _currentAmount: 2
+    _maxAmount: 100
 --- !u!54 &-2477335263609988283
 Rigidbody:
   m_ObjectHideFlags: 0

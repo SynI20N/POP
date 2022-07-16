@@ -97,6 +97,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 3277588636684766674, guid: eb0d2a52cda719447a80b7446034b919, type: 3}
   _maxAmount: 1
+  Amount:
+    _currentAmount: 1
+    _maxAmount: 1
 --- !u!64 &5458625481222611895
 MeshCollider:
   m_ObjectHideFlags: 0

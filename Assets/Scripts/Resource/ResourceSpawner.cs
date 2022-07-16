@@ -43,6 +43,7 @@ public class ResourceSpawner : MonoBehaviour
     {
         Vector3 spawnPos = SpawnHelper.PosInsideCircle(gameObject);
         GameObject resource = Instantiate(_resourcePrefab, spawnPos, Quaternion.identity);
+        //resource.GetComponent<Item>().Amount = new Amount(1);
 
         resource.GetComponent<MeshRenderer>().enabled = false;
         resource.transform.SetParent(_thisCell.transform);

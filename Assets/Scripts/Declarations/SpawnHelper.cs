@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEngine.Random;
 
 public class SpawnHelper : MonoBehaviour
@@ -33,5 +34,13 @@ public class SpawnHelper : MonoBehaviour
         {
             DestroyImmediate(child.gameObject);
         }
+    }
+
+    public static Item CopyComponent(Item original, GameObject destination)
+    {
+        Item copy = destination.AddComponent<Item>();
+        copy.SetImage(original.GetImage());
+        copy.Amount = new Amount(original.Amount);
+        return copy;
     }
 }

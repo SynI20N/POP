@@ -126,5 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 134ee876cdc3acd4780835914d79af62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _image: {fileID: 3277588636684766674, guid: eb0d2a52cda719447a80b7446034b919, type: 3}
-  _maxAmount: 80
+  _image: {fileID: 3277588636684766674, guid: ad30356f9ef63e4409fab2a292d72e8b, type: 3}
+  Amount:
+    _currentAmount: 5
+    _maxAmount: 100

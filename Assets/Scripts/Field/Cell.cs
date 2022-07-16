@@ -8,16 +8,18 @@ using UnityEngine.EventSystems;
 [JsonObject(MemberSerialization.OptIn)]
 public class Cell : MonoBehaviour, IPointerClickHandler
 {
+    public static event Action<Inventory> OnClickInventory;
     public static event Action<Cell> OnClick;
-    
+
     //serialized
-    [JsonProperty] private List<Item> _items = new List<Item>();
+    [JsonProperty] private Inventory _inventory;
     [JsonProperty] private bool _isPassable = true;
-    [JsonProperty] private List<Vector3> _objects;
+    [JsonProperty] private List<Transform> _objects;
 
     private void Start()
     {
-        _objects = new List<Vector3>();
+        _inventory = GetComponent<Inventory>();
+        _objects = new List<Transform>();
 
         UpdateContents();
     }
@@ -27,14 +29,13 @@ public class Cell : MonoBehaviour, IPointerClickHandler
         Item item;
         foreach (Transform child in transform)
         {
-            if (!_objects.Contains(child.transform.position))
+            if (!_objects.Contains(child))
             {
-                _objects.Add(child.transform.position);
-            }
-            bool result = child.gameObject.TryGetComponent(out item);
-            if (result && !_items.Contains(item))
-            {
-                _items.Add(item);
+                _objects.Add(child);
+                if (child.gameObject.TryGetComponent(out item))
+                {
+                    _inventory.AddItem(item);
+                }
             }
         }
     }
@@ -51,6 +52,7 @@ public class Cell : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData pointerEvent)
     {
+        OnClickInventory(_inventory);
         OnClick(this);
     }
 
@@ -61,7 +63,6 @@ public class Cell : MonoBehaviour, IPointerClickHandler
 
     public List<Item> GetItems()
     {
-        List<Item> result = new List<Item>(_items);
-        return result;
+        return _inventory.GetItemList();
     }
 }

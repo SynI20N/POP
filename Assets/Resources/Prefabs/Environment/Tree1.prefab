@@ -19,7 +19,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &6847783523967373343
 Transform:
@@ -99,6 +99,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 3277588636684766674, guid: d6d202a0b1714e84e81144f6e10ff4a1, type: 3}
   _maxAmount: 10
+  Amount:
+    _currentAmount: 1
+    _maxAmount: 1
 --- !u!135 &3252179565564974214
 SphereCollider:
   m_ObjectHideFlags: 0

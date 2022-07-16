@@ -22,3 +22,15 @@ public struct CellMetrics
     public const float outerRadius = 1.75f;
     public const float innerRadius = outerRadius * 0.866025404f;
 }
+
+public struct ItemNotification
+{
+    public Item Item;
+    public Vector3 Position;
+
+    public ItemNotification(Item someItem, Vector3 somePosition)
+    {
+        Item = someItem;
+        Position = somePosition;
+    }
+}

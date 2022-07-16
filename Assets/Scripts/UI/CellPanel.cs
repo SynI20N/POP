@@ -1,94 +1,161 @@
 using DG.Tweening;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using static UnityEngine.Vector3;
 
 public class CellPanel : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _textDescription;
-    [SerializeField] private RectTransform _firstItemPoint;
-    [SerializeField] private uint _itemsPerRow;
+    [SerializeField] private int _slotsInWidth;
 
     private const float _tweenTime = 0.5f;
-    private const float _openSize = 0.6f;
+    private const float _startOpenSize = 0.6f;
 
-    private Stack<Item> _items;
-    private Vector3 _nextIconPos;
     private GameObject _panel;
+
+    private Inventory _inventory;
+    private Transform _itemSlotContainer;
+    private Transform _itemSlotTemplate;
+
+    private float _itemSlotSize;
+    private float _itemSlotOffset = 50f;
+
     private CanvasGroup _canvasGroup;
 
     private void Start()
     {
         _panel = gameObject;
         _canvasGroup = _panel.GetComponent<CanvasGroup>();
-        _nextIconPos = zero;
-        _items = new Stack<Item>();
+        _canvasGroup.blocksRaycasts = false;
 
-        Cell.OnClick += Open;
+        _itemSlotContainer = transform.Find("ItemSlotContanier");
+        _itemSlotTemplate = _itemSlotContainer.Find("ItemSlotTemplate");
+
+        SetSlotSize();
+
+        Cell.OnClickInventory += loadInventory;
     }
 
     private void OnDestroy()
     {
-        Cell.OnClick -= Open;
+        cleanContainer();
+        Cell.OnClickInventory -= loadInventory;
+        _inventory.OnDirty -= updateInventory;
     }
 
-    public void Close()
+    private void loadInventory(Inventory inventory)
     {
-        Animate(0f);
-    }
+        if(_inventory != null)
+        {
+            _inventory.OnDirty -= updateInventory;
+        }
+        _inventory = inventory;
+        _inventory.OnDirty += updateInventory;
 
-    public void Open(Cell cell)
-    {
-        ResfreshStack();
-        DisplayItems(cell);
+        cleanContainer();
+
+        refreshInventoryItems();
+
         Animate(1f);
     }
 
-    private void DisplayItems(Cell cell)
+    private void cleanContainer()
     {
-        List<Item> contents = cell.GetItems();
-        GameObject image;
-        foreach (var c in contents)
+        foreach (Transform child in _itemSlotContainer)
         {
-            _items.Push(c);
-            image = Instantiate(c.GetImage().gameObject, _firstItemPoint);
-            image.GetComponent<RectTransform>().localPosition = _nextIconPos;
-
-            CalculateNextPos(c.GetImage());
+            if (child != _itemSlotTemplate)
+            {
+                Destroy(child.gameObject);
+            }
         }
     }
 
-    private void CalculateNextPos(Image image)
+    private void updateInventory()
     {
-        float width = image.sprite.rect.width;
-        float height = image.sprite.rect.height;
+        cleanContainer();
 
-        _nextIconPos += right * width;
-        if (_nextIconPos.x >= _itemsPerRow * width)
+        refreshInventoryItems();
+    }
+
+    private void refreshInventoryItems()
+    {
+        int x = 0;
+        int y = 0;
+        foreach (Item item in _inventory.GetItemList())
         {
-            _nextIconPos += down * height;
-            _nextIconPos.x = 0;
+            RectTransform itemSlotRectTransform = CreatRectTransform();
+            itemSlotRectTransform.gameObject.SetActive(true);
+
+            SetPosition(itemSlotRectTransform, x, y);
+            if (x > _slotsInWidth)
+            {
+                x = 0;
+                y++;
+            }
+            x++;
+
+            UnityEngine.UI.Image image = FindImage(itemSlotRectTransform);
+            image.sprite = item.GetImage().sprite;
+
+            TextMeshProUGUI uiText = FindText(itemSlotRectTransform);
+            SetText(uiText, item);
         }
     }
 
-    private void ResfreshStack()
+    private RectTransform CreatRectTransform()
     {
-        _nextIconPos = zero;
-        Image[] images = _firstItemPoint.GetComponentsInChildren<Image>();
-        for (int i = 0; i < images.Length; i++)
+        return Instantiate(_itemSlotTemplate, _itemSlotContainer).GetComponent<RectTransform>();
+    }
+
+    private void SetPosition(RectTransform itemSlotRectTransform, int x, int y)
+    {
+        itemSlotRectTransform.anchoredPosition = new Vector2(x * _itemSlotSize + _itemSlotOffset, -y * _itemSlotSize);
+    }
+
+    private UnityEngine.UI.Image FindImage(RectTransform itemSlotRectTransform)
+    {
+        return itemSlotRectTransform.Find("ItemImage").GetComponent<UnityEngine.UI.Image>();
+    }
+
+    private TextMeshProUGUI FindText(RectTransform itemSlotRectTransform)
+    {
+        return itemSlotRectTransform.Find("Amount").GetComponent<TextMeshProUGUI>();
+    }
+
+    private void SetText(TextMeshProUGUI uiText, Item item)
+    {
+        if (item.Amount.Value() > 1)
         {
-            _items.Pop();
-            Destroy(images[i].gameObject);
+            uiText.text = ("x" + item.Amount.Value().ToString());
         }
+        else
+        {
+            uiText.text = ("");
+        }
+    }
+
+    private void SetSlotSize()
+    {
+        RectTransform panelRT = _panel.GetComponent<RectTransform>();
+        float backgroundWidth = panelRT.rect.width;
+
+        _itemSlotSize = backgroundWidth / (float)_slotsInWidth;
+
+        RectTransform slotRT = _itemSlotTemplate.GetComponent<RectTransform>();
+        slotRT.DOScale(slotRT.localScale * _itemSlotSize / slotRT.rect.width, 0);
+
+        _itemSlotOffset *= _itemSlotSize / slotRT.rect.width;
     }
 
     private void Animate(float alpha)
     {
         _canvasGroup.alpha = alpha;
-        _panel.transform.localScale = one * _openSize;
+        _canvasGroup.blocksRaycasts = true;
+        _panel.transform.localScale = one * _startOpenSize;
         _panel.transform.DOKill();
         _panel.transform.DOScale(alpha, _tweenTime);
+    }
+    public void Close()
+    {
+        Animate(0f);
     }
 }

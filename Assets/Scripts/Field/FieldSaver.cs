@@ -27,7 +27,7 @@ public class FieldSaver
 
     public static Field Load()
     {
-        string json;
+        /*string json;
         Field field;
 
         json = File.ReadAllText(_path);
@@ -38,6 +38,7 @@ public class FieldSaver
             Debug.Log(c.GetPosition());
         }
 
-        return field;
+        return field;*/
+        return new Field();
     }
 }

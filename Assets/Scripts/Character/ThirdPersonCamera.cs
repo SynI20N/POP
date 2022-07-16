@@ -22,4 +22,9 @@ public class ThirdPersonCamera : MonoBehaviour
     {
         _camera.transform.position = _objectTransform.position + _linkVector;
     }
+
+    public Vector3 WorldToScreenPoint(Vector3 position)
+    {
+        return _camera.WorldToScreenPoint(position);
+    }
 }
