@@ -10,6 +10,7 @@ public class Miner : MonoBehaviour
 
     [SerializeField] private List<Item> _minedItems;
     [SerializeField] private float _miningTime;
+    [SerializeField] private AnimationController _controller;
 
     private Amount _progress;
     private Inventory _storage;
@@ -58,11 +59,12 @@ public class Miner : MonoBehaviour
     private IEnumerator Mining(Item item)
     {
         _progress = new Amount(0);
+        _controller.SetFlag("Mining", true);
         while (!_progress.IsFull())
         {
             checkFar(item);
-            _progress.Increase(10);
-            yield return new WaitForSeconds(_miningTime / 10f);
+            _progress.Increase(5);
+            yield return new WaitForSeconds(_miningTime / 20f);
         }
         OnMinedResource(new ItemNotification(item, transform.position));
         Inventory inventory = item.GetComponentInParent<Inventory>();
@@ -72,6 +74,7 @@ public class Miner : MonoBehaviour
 
         Destroy(item.gameObject);
         _mining = false;
+        _controller.SetFlag("Mining", false);
     }
 
     private void checkFar(Item someItem)
@@ -80,7 +83,13 @@ public class Miner : MonoBehaviour
         if (!_meshCollider.bounds.Intersects(other.bounds))
         {
             _mining = false;
+            _controller.SetFlag("Mining", false);
             StopCoroutine(nameof(Mining));
         }
+    }
+
+    public bool IsMining()
+    {
+        return _mining;
     }
 }

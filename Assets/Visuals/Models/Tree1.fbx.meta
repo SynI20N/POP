@@ -15,7 +15,7 @@ ModelImporter:
       name: Color_C08.010
     second: {fileID: 2100000, guid: 2a45f1479b67cc747acd37001f176770, type: 2}
   materials:
-    materialImportMode: 2
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1

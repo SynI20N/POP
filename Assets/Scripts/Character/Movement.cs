@@ -5,17 +5,17 @@ using UnityEngine.EventSystems;
 using static UnityEngine.Vector3;
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(AnimationController))]
 public class Movement : MonoBehaviour
 {
-
     private Transform _transform;
     private Rigidbody _rigidbody;
     private Plane _movementSpace;
-    private Animator _animator;
+    private AnimationController _controller;
     private Sequence _sequence;
 
     [SerializeField] private float _speed;
+    [SerializeField] private Miner _miner;
 
     private void Awake()
     {
@@ -26,7 +26,7 @@ public class Movement : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody>();
         _transform = GetComponent<Transform>();
-        _animator = GetComponent<Animator>();
+        _controller = GetComponent<AnimationController>();
 
         _movementSpace = new Plane();
         _sequence = DOTween.Sequence();
@@ -73,17 +73,14 @@ public class Movement : MonoBehaviour
 
     public void EvaluateInfo(TouchInfo info)
     {
-        if (!info.Pressed || info.Distance < 5.0f)
+        if (!info.Pressed || info.Distance < 5.0f && !(_controller.GetCurrentState() == "Stop"))
         {
-            _animator.SetTrigger("Stop");
-            _animator.ResetTrigger("Run");
+            _controller.SetState("Stop");
             Stop();
-            return;
         }
         else
         {
-            _animator.SetTrigger("Run");
-            _animator.ResetTrigger("Stop");
+            _controller.SetState("Run");
             Move(info);
         }
     }

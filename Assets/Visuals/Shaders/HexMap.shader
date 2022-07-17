@@ -17,12 +17,12 @@ Shader "Custom/HexMap"
     SubShader
     {
         Cull back
-        Tags {"Queue" = "Transparent" "RenderType" = "Transparent" }
+        //Tags {"Queue" = "Albedo" "RenderType" = "Transparent" }
         LOD 200
 
         CGPROGRAM
 
-        #pragma surface surf Lambert alpha:fade vertex:vert interpolateview
+        #pragma surface surf Lambert alpha:blend vertex:vert
 
         #pragma target 2.5
 
@@ -80,7 +80,7 @@ Shader "Custom/HexMap"
             {
                 mask = 1;
             }
-            texOffset.xy = -ParallaxOffset(tex2D(_MainTex, IN.uv_MainTex).r, _HeightPower, IN.viewDir).xy;
+            //texOffset.xy = -ParallaxOffset(tex2D(_MainTex, IN.uv_MainTex).r, _HeightPower, IN.viewDir).xy;
             fixed4 c = tex2D(_MainTex, IN.uv_MainTex + texOffset) * _Color;
             fixed4 e = tex2D(_EmissionMap, IN.uv_EmissionMap);
 
