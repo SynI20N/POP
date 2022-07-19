@@ -73,10 +73,13 @@ public class Movement : MonoBehaviour
 
     public void EvaluateInfo(TouchInfo info)
     {
-        if (!info.Pressed || info.Distance < 5.0f && !(_controller.GetCurrentState() == "Stop"))
+        if (!info.Pressed || info.Distance < 5.0f)
         {
-            _controller.SetState("Stop");
-            Stop();
+            if (!(_controller.GetCurrentState() == "Stop"))
+            {
+                _controller.SetState("Stop");
+                Stop();
+            }
         }
         else
         {

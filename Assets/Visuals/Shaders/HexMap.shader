@@ -16,20 +16,20 @@ Shader "Custom/HexMap"
     }
     SubShader
     {
-        Cull back
-        //Tags {"Queue" = "Albedo" "RenderType" = "Transparent" }
+        Blend OneMinusDstColor One
+        Cull Back
+        Tags {"RenderType" = "Opaque" }
         LOD 200
 
         CGPROGRAM
 
-        #pragma surface surf Lambert alpha:blend vertex:vert
-
+        #pragma surface surf Lambert vertex:vert
         #pragma target 2.5
 
         sampler2D _MainTex;
         sampler2D _NormalMap;
         sampler2D _EmissionMap;
-        float4 _Pos;
+        fixed4 _Pos;
         half _HeightPower;
         half _r;
         half _R;
@@ -61,11 +61,16 @@ Shader "Custom/HexMap"
             return Pos.y + _R - (_R / (2 * _r)) * abs(Pos.x - IN.worldPos.x);
         }
 
+        half lowerLineFunc(Input IN, float2 Pos)
+        {
+            return Pos.y - _R + (_R / (2 * _r)) * abs(Pos.x - IN.worldPos.x);
+        }
+
         bool isInsideHex(Input IN, float2 Pos)
         {
             if (abs(IN.worldPos.x - (Pos.x - _xOffset)) < _r 
              && (IN.worldPos.z + _yOffset) < lineFunc(IN, Pos)
-             && (IN.worldPos.z + _yOffset) > lineFunc(IN, Pos) - 2 * _R + abs(Pos.x - IN.worldPos.x) * 1.17
+             && (IN.worldPos.z + _yOffset) > lowerLineFunc(IN, Pos)
                 )
             {
                 return true;
@@ -80,7 +85,6 @@ Shader "Custom/HexMap"
             {
                 mask = 1;
             }
-            //texOffset.xy = -ParallaxOffset(tex2D(_MainTex, IN.uv_MainTex).r, _HeightPower, IN.viewDir).xy;
             fixed4 c = tex2D(_MainTex, IN.uv_MainTex + texOffset) * _Color;
             fixed4 e = tex2D(_EmissionMap, IN.uv_EmissionMap);
 

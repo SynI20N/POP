@@ -27,7 +27,7 @@ public class Field : MonoBehaviour
 
     private void Start()
     {
-        _fieldMaterial = GetComponent<MeshRenderer>().material;
+        _fieldMaterial = GetComponent<MeshRenderer>().sharedMaterial;
         _fieldBuilder = GetComponent<FieldBuilder>();
         _fieldMaterial.EnableKeyword("POS");
 
@@ -35,7 +35,6 @@ public class Field : MonoBehaviour
         Timer.spawnSpawner += AddResourceSpawner;
 
         FindField();
-        //FieldSaver.Load();
     }
 
     private void OnDestroy()

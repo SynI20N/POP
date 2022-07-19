@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 7509861933806970911}
   - component: {fileID: 6888176699482433466}
   - component: {fileID: 8679368315377095536}
-  - component: {fileID: 4118556922773563991}
   - component: {fileID: -8465504952443541559}
   - component: {fileID: 379878682601052305}
+  - component: {fileID: 4295386179541001633}
   m_Layer: 8
   m_Name: Copper
   m_TagString: Untagged
@@ -84,20 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &4118556922773563991
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7166268310533354149}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 3848237812612184780, guid: 4214823773354314cb6d20c266b6374f, type: 3}
 --- !u!54 &-8465504952443541559
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -130,3 +116,16 @@ MonoBehaviour:
   Amount:
     _currentAmount: 5
     _maxAmount: 100
+--- !u!65 &4295386179541001633
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7166268310533354149}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2, y: 1, z: 2}
+  m_Center: {x: 0.03757751, y: 0.0023808777, z: 0.0020813346}

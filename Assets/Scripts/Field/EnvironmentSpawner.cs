@@ -19,9 +19,12 @@ public class EnvironmentSpawner : MonoBehaviour
         {
             CalculatePos(cell);
 
-            GameObject obj = Instantiate(_environmentPrefabs[_counter], _spawnPos, _rotation);
-            obj.transform.eulerAngles += new Vector3(0, rotation, 0);
-            obj.transform.SetParent(cell.transform);
+            if (_spawnPos != zero)
+            {
+                GameObject obj = Instantiate(_environmentPrefabs[_counter], _spawnPos, _rotation);
+                obj.transform.eulerAngles += new Vector3(0, rotation, 0);
+                obj.transform.SetParent(cell.transform);
+            }
         }
     }
 
@@ -30,6 +33,7 @@ public class EnvironmentSpawner : MonoBehaviour
         int layerMask = 1 << 0;
         _spawnPos = SpawnHelper.PosInsideCircle(cell.gameObject);
         Physics.Raycast(_spawnPos, down, out _hit, 100f, layerMask);
+        
         PosOnGround();
     }
 
