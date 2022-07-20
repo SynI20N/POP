@@ -30,7 +30,7 @@ public class Miner : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         Item item;
-        if(!_mining && objectIsItem(other, out item))
+        if(canMine() && objectIsItem(other, out item))
         {
             foreach(var i in _minedItems)
             {
@@ -42,6 +42,12 @@ public class Miner : MonoBehaviour
                 }
             }
         }
+    }
+
+    private bool canMine()
+    {
+        Rigidbody miner = GetComponentInParent<Rigidbody>();
+        return !_mining && miner.IsSleeping();
     }
 
     private bool objectIsItem(Collider someCollider, out Item item)

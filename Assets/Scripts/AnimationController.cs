@@ -44,6 +44,7 @@ public class AnimationController : MonoBehaviour
     public void SetFlag(string flagName, bool value)
     {
         _animator.SetBool(flagName, value);
+        _currentState = flagName;
     }
 
     public string GetCurrentState()
