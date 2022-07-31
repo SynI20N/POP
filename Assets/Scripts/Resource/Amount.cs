@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using UnityEngine;
 using static Unity.Mathematics.math;
@@ -5,7 +6,7 @@ using static Unity.Mathematics.math;
 [Serializable]
 public class Amount
 {
-    [SerializeField] private int _currentAmount;
+    [JsonProperty] [SerializeField] private int _currentAmount;
     [SerializeField] private int _maxAmount = 100;
 
     public Amount(int initAmount)

@@ -9,8 +9,7 @@ public class Item : MonoBehaviour
 {
     [SerializeField] private Image _image;
 
-    /*[JsonProperty]*/
-    [SerializeField] public Amount Amount;/* { get; set; }*/
+    [JsonProperty] [SerializeField] public Amount Amount;
 
     public Image GetImage()
     {

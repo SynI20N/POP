@@ -114,7 +114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 3277588636684766674, guid: ad30356f9ef63e4409fab2a292d72e8b, type: 3}
   Amount:
-    _currentAmount: 5
+    _currentAmount: 20
     _maxAmount: 100
 --- !u!65 &4295386179541001633
 BoxCollider:

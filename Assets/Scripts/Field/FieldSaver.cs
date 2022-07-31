@@ -3,9 +3,9 @@ using System.IO;
 using System;
 using UnityEngine;
 
-public class FieldSaver
+public class FieldSaver : MonoBehaviour
 {
-    private static string _path = Application.persistentDataPath + "/data.json";
+    private static string _path = Path.Combine(Application.persistentDataPath, "data.json");
     public static void Save(Field field)
     {
         try
@@ -25,20 +25,23 @@ public class FieldSaver
         }
     }
 
-    public static Field Load()
+    public static void Load()
     {
-        /*string json;
-        Field field;
-
-        json = File.ReadAllText(_path);
-        field = JsonConvert.DeserializeObject<Field>(json);
-        Cell[,] cells = field.GetField();
-        foreach(var c in cells)
+        string hexPosition = "";
+        string json = File.ReadAllText(_path);
+        using (var reader = new JsonTextReader(new StringReader(json)))
         {
-            Debug.Log(c.GetPosition());
+            while (reader.Read())
+            {
+                if (reader.TokenType == JsonToken.String && reader.Value.ToString() == "Hex")
+                {
+                    //GameObject hex = Instantiate(SpawnHelper.LoadPrefab("Environment", reader.Value.ToString()));
+                    reader.Read();
+                    reader.Read();
+                    Debug.LogFormat("{0} - {1} - {2}", reader.TokenType, reader.ValueType, reader.Value);
+                    //hex.transform.position = 
+                }
+            }
         }
-
-        return field;*/
-        return new Field();
     }
 }

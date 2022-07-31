@@ -1,6 +1,8 @@
 using DG.Tweening;
+using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using static UnityEngine.Vector3;
 
 public class InventoryPanel : MonoBehaviour
@@ -8,7 +10,7 @@ public class InventoryPanel : MonoBehaviour
     [SerializeField] private int _slotsInWidth;
 
     private const float _tweenTime = 0.5f;
-    private const float _startOpenSize = 0.6f;
+    private const float _startOpenSize = 0.75f;
 
     private GameObject _panel;
 
@@ -32,17 +34,31 @@ public class InventoryPanel : MonoBehaviour
 
         SetSlotSize();
 
-        Character.OnCharacterClick += loadInventory;
+        ExtendedStart();
+    }
+
+    protected virtual void ExtendedStart()
+    {
+
     }
 
     private void OnDestroy()
     {
         cleanContainer();
-        Character.OnCharacterClick -= loadInventory;
-        _inventory.OnDirty -= updateInventory;
+        if (_inventory != null)
+        {
+            _inventory.OnDirty -= updateInventory;
+        }
+
+        ExtendedDestroy();
     }
 
-    private void loadInventory(Inventory inventory)
+    protected virtual void ExtendedDestroy()
+    {
+
+    }
+
+    public void loadInventory(Inventory inventory)
     {
         if (_inventory != null)
         {
@@ -51,9 +67,7 @@ public class InventoryPanel : MonoBehaviour
         _inventory = inventory;
         _inventory.OnDirty += updateInventory;
 
-        cleanContainer();
-
-        refreshInventoryItems();
+        updateInventory();
 
         Animate(1f);
     }
@@ -86,18 +100,18 @@ public class InventoryPanel : MonoBehaviour
             itemSlotRectTransform.gameObject.SetActive(true);
 
             SetPosition(itemSlotRectTransform, x, y);
-            if (x > _slotsInWidth)
-            {
-                x = 0;
-                y++;
-            }
-            x++;
-
             UnityEngine.UI.Image image = FindImage(itemSlotRectTransform);
             image.sprite = item.GetImage().sprite;
 
             TextMeshProUGUI uiText = FindText(itemSlotRectTransform);
             SetText(uiText, item);
+
+            x++;
+            if (x > _slotsInWidth - 1)
+            {
+                x = 0;
+                y++;
+            }
         }
     }
 

@@ -35,6 +35,7 @@ public class Field : MonoBehaviour
         Timer.spawnSpawner += AddResourceSpawner;
 
         FindField();
+        FieldSaver.Load();
     }
 
     private void OnDestroy()

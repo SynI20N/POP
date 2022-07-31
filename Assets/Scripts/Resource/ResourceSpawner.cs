@@ -23,8 +23,8 @@ public class ResourceSpawner : MonoBehaviour
     private void GetPrefab()
     {
         List<GameObject> _resourcePrefabs = new List<GameObject>();
-        _resourcePrefabs.Add(Resources.Load<GameObject>("Prefabs/Resources/Iron"));
-        _resourcePrefabs.Add(Resources.Load<GameObject>("Prefabs/Resources/Copper"));
+        _resourcePrefabs.Add(SpawnHelper.LoadPrefab("Resources", "Iron"));
+        _resourcePrefabs.Add(SpawnHelper.LoadPrefab("Resources", "Copper"));
         int i = Random.Range(0, _resourcePrefabs.Count);
         _resourcePrefab = _resourcePrefabs[i];
     }
@@ -43,7 +43,6 @@ public class ResourceSpawner : MonoBehaviour
     {
         Vector3 spawnPos = SpawnHelper.PosInsideCircle(gameObject);
         GameObject resource = Instantiate(_resourcePrefab, spawnPos, Quaternion.identity);
-        //resource.GetComponent<Item>().Amount = new Amount(1);
 
         resource.GetComponent<MeshRenderer>().enabled = false;
         resource.transform.SetParent(_thisCell.transform);

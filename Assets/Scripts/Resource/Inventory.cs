@@ -1,14 +1,17 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+[Serializable]
+[JsonObject(MemberSerialization.OptIn)]
 public class Inventory : MonoBehaviour
 {
-    [SerializeField] private int _maxSlots;
+    [JsonProperty] [SerializeField] private int _maxSlots;
 
-    private List<Item> _itemList;
+    [JsonProperty] private List<Item> _itemList;
     public Action OnDirty;
 
     private void Start()

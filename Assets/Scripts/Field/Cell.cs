@@ -12,6 +12,8 @@ public class Cell : MonoBehaviour, IPointerClickHandler
     public static event Action<Cell> OnClick;
 
     //serialized
+    [JsonProperty] private string _prefabInstance = "Hex";
+    [JsonProperty] private Vector3 _position;
     [JsonProperty] private Inventory _inventory;
     [JsonProperty] private bool _isPassable = true;
     [JsonProperty] private List<Transform> _objects;
@@ -20,6 +22,7 @@ public class Cell : MonoBehaviour, IPointerClickHandler
     {
         _inventory = GetComponent<Inventory>();
         _objects = new List<Transform>();
+        _position = transform.position;
 
         UpdateContents();
     }
